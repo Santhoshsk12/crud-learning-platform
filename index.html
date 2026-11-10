@@ -1,0 +1,2715 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CRUD — Continue Reading to Update and Develop</title>
+<meta name="description" content="Explore 20 focused learning topics with a guide, a video, and hands-on practice, plus six quick technology facts.">
+<meta name="theme-color" content="#ACB8AF">
+<script>
+  /* Set the theme before first paint so there is no flash of the wrong palette. */
+  (function () {
+    var root = document.documentElement;
+    var stored = null;
+    try { stored = localStorage.getItem("crud-theme"); } catch (e) {}
+    /* First visit always opens light; after that the visitor's own
+       choice is what we restore. */
+    var theme = (stored === "dark" || stored === "light") ? stored : "light";
+    root.setAttribute("data-theme", theme);
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute("content", theme === "dark" ? "#070A12" : "#ACB8AF");
+  })();
+</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2048%2048%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23263F45%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23416D58%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%2248%22%20height%3D%2248%22%20rx%3D%2214%22%20fill%3D%22url%28%23g%29%22%2F%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23DDF3A2%22%20stroke-width%3D%222.2%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M5.5%2014.5c6.1-2.5%2012-1.8%2018.5%202.2v20c-6.5-3.8-12.4-4.5-18.5-2.2z%22%2F%3E%3Cpath%20d%3D%22M42.5%2014.5c-6.1-2.5-12-1.8-18.5%202.2v20c6.5-3.8%2012.4-4.5%2018.5-2.2z%22%2F%3E%3Cpath%20d%3D%22M10%2021h7M10%2027h7m7%2031%204.2-4.2%203.2%202.1%205.1-7.2M34.5%2021.7h5v5M24%2016.7v19.5%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* CRUD — light learning atlas
+   Soft contours, clear surfaces, and one accent per category. */
+
+:root{
+  --bg:#D9E1D9;
+  --bg-2:#CFD9D0;
+  --surface:#E8EEE7;
+  --surface-2:#DCE5DC;
+  --ink:#1D2D32;
+  --muted:#5D7067;
+  --line:rgba(29,45,50,.10);
+  --line-strong:rgba(29,45,50,.20);
+  --lime:#50782C;
+  --coral:#B94D3D;
+  --blue:#426B9A;
+  --teal:#267463;
+  --violet:#725BA8;
+  --gold:#94702A;
+  --accent:var(--lime);
+  --serif:'Fraunces', Georgia, 'Times New Roman', serif;
+  --sans:'Space Grotesk', system-ui, -apple-system, sans-serif;
+  --gutter:clamp(20px,4vw,64px);
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:var(--sans);font-size:16px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+body.menu-open{overflow:hidden}
+::selection{background:var(--lime);color:#FFFFFF}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;cursor:pointer}
+h1,h2,h3,p,dl,dd{margin:0}
+ul,ol{list-style:none;margin:0;padding:0}
+img,svg{display:block;max-width:100%}
+:focus-visible{outline:2px solid var(--lime);outline-offset:4px;border-radius:4px}
+
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.skip{position:fixed;left:12px;top:12px;z-index:120;background:var(--lime);color:#FFFFFF;padding:9px 16px;font-size:12px;font-weight:500;transform:translateY(-200%);transition:transform .18s}
+.skip:focus{transform:none}
+
+/* ---------- background ---------- */
+.bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.bg::before{
+  content:"";position:absolute;inset:-25%;
+  background:
+    radial-gradient(640px 460px at 10% 7%,rgba(112,151,121,.17),transparent 64%),
+    radial-gradient(720px 520px at 90% 12%,rgba(110,139,177,.13),transparent 66%),
+    radial-gradient(760px 560px at 54% 105%,rgba(119,163,139,.12),transparent 68%);
+  filter:blur(28px);
+  animation:drift 24s ease-in-out infinite alternate;
+}
+.bg::after{
+  content:"";position:absolute;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%201600%201000%22%20fill%3D%22none%22%3E%0A%3Cpath%20d%3D%22M-120%20690C120%20520%20260%20790%20500%20625S870%20310%201110%20475s390%2080%20610-115%22%20stroke%3D%22%238EA18E%22%20stroke-opacity%3D%22.28%22%20stroke-width%3D%222%22%2F%3E%0A%3Cpath%20d%3D%22M-130%20760C105%20590%20290%20855%20530%20690S900%20375%201140%20540s380%2080%20600-110%22%20stroke%3D%22%238EA18E%22%20stroke-opacity%3D%22.19%22%20stroke-width%3D%222%22%2F%3E%0A%3Cpath%20d%3D%22M-90%20830C150%20660%20330%20920%20580%20755S950%20440%201190%20605s360%2080%20570-105%22%20stroke%3D%22%238EA18E%22%20stroke-opacity%3D%22.15%22%20stroke-width%3D%222%22%2F%3E%0A%3Cpath%20d%3D%22M-120%20410C125%20250%20300%20510%20540%20365S900%20120%201140%20280s390%2080%20610-95%22%20stroke%3D%22%238EA18E%22%20stroke-opacity%3D%22.15%22%20stroke-width%3D%222%22%2F%3E%0A%3Cpath%20d%3D%22M-80%20485C165%20325%20340%20585%20580%20440S940%20195%201180%20355s380%2080%20590-90%22%20stroke%3D%22%238EA18E%22%20stroke-opacity%3D%22.12%22%20stroke-width%3D%222%22%2F%3E%0A%3C%2Fsvg%3E");
+  background-repeat:no-repeat;background-size:cover;background-position:center 34%;
+  opacity:.46;
+  -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 56%,transparent 94%);
+  mask-image:linear-gradient(to bottom,#000 0%,#000 56%,transparent 94%);
+}
+.grain{
+  position:fixed;inset:0;pointer-events:none;z-index:2;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.65'/%3E%3C/svg%3E");
+}
+main,header,footer{position:relative;z-index:1}
+.wrap{max-width:1240px;margin:0 auto;padding:0 var(--gutter);position:relative}
+
+/* ---------- masthead ---------- */
+.masthead{position:sticky;top:0;z-index:60;background:rgba(217,225,217,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+.mast-in{max-width:1240px;margin:0 auto;padding:14px var(--gutter);display:flex;align-items:center;justify-content:space-between;gap:24px}
+.brand{display:inline-flex;align-items:center;gap:10px}
+.mark{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(145deg,#263F45 0%,#416D58 100%);color:#DDF3A2;box-shadow:0 0 0 1px rgba(255,255,255,.72),0 9px 23px -12px rgba(48,91,72,.48);transition:transform .22s var(--ease),box-shadow .22s;flex:none}
+.mark svg{width:29px;height:29px}
+.brand:hover .mark{transform:translateY(-2px) rotate(-3deg) scale(1.045);box-shadow:0 0 0 1px rgba(255,255,255,.88),0 13px 26px -10px rgba(48,91,72,.48)}
+.wordmark{font-family:var(--serif);font-size:25px;font-weight:600;letter-spacing:-.055em;line-height:1;background:linear-gradient(108deg,#243B43 0%,#4C795B 52%,#527B96 100%);background-size:100% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;white-space:nowrap}
+.mast-nav{display:flex;align-items:center;gap:28px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.mast-nav a{position:relative;padding:5px 0;transition:color .15s}
+.mast-nav a::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;background:var(--lime);transform:scaleX(0);transform-origin:left;transition:transform .25s var(--ease)}
+.mast-nav a:hover{color:var(--ink)}
+.mast-nav a:hover::after{transform:scaleX(1)}
+.mast-cta{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line-strong);border-radius:999px;padding:8px 14px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);transition:.2s}
+.mast-cta:hover{border-color:var(--lime);color:var(--lime);background:rgba(183,227,107,.06)}
+.mast-cta svg{width:14px;height:14px}
+.menu-btn{display:none;border:1px solid var(--line-strong);background:transparent;border-radius:999px;padding:8px 13px;font-size:10px;letter-spacing:.12em;text-transform:uppercase}
+
+/* ---------- hero ---------- */
+.hero{position:relative;overflow:hidden;padding:clamp(34px,4.4vw,62px) 0 clamp(40px,6vw,76px);border-bottom:1px solid var(--line)}
+.eyebrow{display:inline-flex;align-items:center;gap:12px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.eyebrow::before{content:"";width:38px;height:1px;background:var(--lime)}
+.hero h1{
+  display:flex;align-items:center;gap:.005em;width:max-content;max-width:100%;
+  font-family:var(--serif);font-weight:600;font-style:normal;
+  font-size:clamp(68px,8vw,116px);line-height:.92;letter-spacing:-.075em;
+  margin:8px 0 0;padding:0 .04em .035em 0;
+  background:linear-gradient(105deg,#263F45 0%,#47796A 38%,#7DA647 68%,#527C9A 100%);
+  background-size:100% 100%;
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+  font-variation-settings:'wght' 600;filter:drop-shadow(0 7px 14px rgba(57,91,72,.10));
+}
+.hero h1 span{display:inline-block;min-width:.58em;opacity:0;transform:translateY(15px) scale(.94);filter:blur(4px);animation:brandLetterStep .62s cubic-bezier(.2,.8,.2,1) forwards}
+.hero h1 span:nth-child(1){animation-delay:.04s}
+.hero h1 span:nth-child(2){animation-delay:.12s}
+.hero h1 span:nth-child(3){animation-delay:.20s}
+.hero h1 span:nth-child(4){animation-delay:.28s}
+@supports not ((-webkit-background-clip:text) or (background-clip:text)){
+  .hero h1{color:var(--ink);-webkit-text-fill-color:currentColor}.hero h1 span{-webkit-text-fill-color:currentColor}
+}
+.hero-row{display:grid;grid-template-columns:1fr;gap:8px;max-width:640px;margin-top:clamp(5px,.7vw,10px)}
+.hero-sub{font-family:var(--serif);font-size:clamp(24px,3.2vw,38px);line-height:1.08;letter-spacing:-.02em;max-width:16ch}
+.hero-p{color:var(--muted);font-size:14px;max-width:48ch}
+.hero-p span{display:block}
+.hero-p strong{color:var(--ink);font-weight:500}
+
+/* hero learning stack */
+.hero-visual{position:absolute;right:clamp(54px,5.4vw,92px);top:clamp(30px,4.5vw,66px);width:min(29vw,370px);z-index:1;perspective:1100px}
+.stack{position:relative;height:430px;transform-style:preserve-3d;transition:transform .35s var(--ease)}
+.stack::before{content:"";position:absolute;left:12%;right:4%;top:14%;bottom:8%;border-radius:50%;background:radial-gradient(circle at 60% 40%,rgba(183,227,107,.18),rgba(99,137,242,.10) 45%,transparent 70%);filter:blur(40px);pointer-events:none}
+.stack-card{
+  position:absolute;left:0;right:0;padding:18px 20px;border:1px solid var(--line-strong);border-radius:18px;
+  background:linear-gradient(155deg,#EAF0E9,#DCE5DC);box-shadow:0 22px 54px -34px rgba(37,49,73,.22);
+  transition:transform .45s var(--ease),border-color .3s,box-shadow .3s;backdrop-filter:blur(6px);
+}
+.stack-back{top:6px;height:206px;transform:rotate(-7deg) translateX(-18px);opacity:.6}
+.stack-mid{top:72px;height:206px;transform:rotate(-3deg) translateX(2px);opacity:.82}
+.stack-front{top:146px;height:246px;transform:rotate(0deg) translateX(18px);border-color:color-mix(in srgb,var(--lime) 34%,transparent)}
+.hero-visual:hover .stack-back{transform:rotate(-10deg) translate(-30px,-10px);opacity:.8}
+.hero-visual:hover .stack-mid{transform:rotate(-4deg) translate(-8px,-4px);opacity:1}
+.hero-visual:hover .stack-front{transform:rotate(1deg) translate(28px,-8px);border-color:var(--lime);box-shadow:0 34px 70px -30px rgba(183,227,107,.38)}
+.stack-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.stack-tag{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.stack-icon{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;color:var(--lime);background:rgba(183,227,107,.10);border:1px solid rgba(183,227,107,.26)}
+.stack-icon svg{width:16px;height:16px}
+.stack-lines{display:grid;gap:9px;margin-top:26px}
+.stack-lines i{display:block;height:6px;border-radius:999px;background:rgba(23,34,56,.09)}
+.stack-lines i:nth-child(1){width:78%}
+.stack-lines i:nth-child(2){width:56%}
+.stack-lines i:nth-child(3){width:66%}
+.stack-front h3{font-family:var(--serif);font-weight:500;font-size:25px;line-height:1.05;letter-spacing:-.02em;margin:14px 0 6px}
+.stack-front p{font-size:12px;color:var(--muted)}
+.stack-progress{height:4px;border-radius:999px;background:rgba(23,34,56,.10);margin:16px 0 12px;overflow:hidden}
+.stack-progress span{display:block;height:100%;width:64%;border-radius:999px;background:linear-gradient(90deg,var(--lime),var(--blue))}
+.stack-chips{display:flex;gap:6px;flex-wrap:wrap}
+.stack-chips span{font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 8px}
+.stack-badge{position:absolute;right:0;top:-16px;z-index:2;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#FFFFFF;background:var(--lime);border-radius:999px;padding:7px 12px;font-weight:700;box-shadow:0 12px 30px -10px rgba(183,227,107,.55)}
+
+.search-box{display:flex;align-items:center;gap:12px;margin-top:clamp(32px,5vw,48px);padding:8px 8px 8px 18px;border:1px solid var(--line-strong);border-radius:999px;background:rgba(232,238,231,.96);max-width:680px;transition:border-color .2s,box-shadow .2s}
+.search-box:focus-within{border-color:var(--lime);box-shadow:0 0 0 4px rgba(183,227,107,.10)}
+.search-box > svg{width:18px;height:18px;stroke:var(--muted);fill:none;stroke-width:1.6;flex:none}
+.search-box input{flex:1;min-width:0;border:0;background:transparent;outline:none;font:inherit;font-size:15px;color:var(--ink)}
+.search-box input::placeholder{color:var(--muted)}
+.search-box button{border:0;border-radius:999px;background:var(--lime);color:#FFFFFF;padding:11px 18px;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;transition:transform .15s var(--ease),box-shadow .2s}
+.search-box button:hover{transform:translateY(-1px);box-shadow:0 8px 24px -8px rgba(183,227,107,.7)}
+
+.stats{display:flex;gap:clamp(24px,4vw,48px);margin-top:clamp(28px,4vw,44px);flex-wrap:wrap}
+.stats div{display:flex;flex-direction:column;gap:3px;padding-right:clamp(24px,4vw,48px);border-right:1px solid var(--line)}
+.stats div:last-child{border-right:0;padding-right:0}
+.stats b{font-family:var(--serif);font-size:clamp(30px,4vw,44px);font-weight:500;line-height:1;font-variant-numeric:tabular-nums}
+.stats span{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+
+/* ---------- marquee ---------- */
+.marquee{overflow:hidden;border-bottom:1px solid var(--line);background:rgba(23,34,56,.02);padding:13px 0}
+.marquee-track{display:flex;gap:0;width:max-content;animation:marquee 46s linear infinite}
+.marquee span{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.marquee span::after{content:"·";margin:0 22px;color:var(--lime);opacity:.7}
+
+/* ---------- sections ---------- */
+.section{padding:clamp(56px,8vw,96px) 0;border-bottom:1px solid var(--line);position:relative}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:clamp(24px,4vw,40px)}
+.sec-title{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:10px}
+.sec-title b{color:var(--lime);font-weight:500}
+.sec-head h2{font-family:var(--serif);font-weight:500;font-size:clamp(30px,4.4vw,52px);line-height:1;letter-spacing:-.03em;margin-top:10px}
+.sec-note{font-size:11px;color:var(--muted);text-align:right;max-width:34ch}
+
+/* ---------- bento categories ---------- */
+.bento{display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(12px,1.6vw,18px)}
+.cat-card{
+  position:relative;grid-column:span 4;display:flex;flex-direction:column;justify-content:space-between;
+  min-height:270px;padding:clamp(22px,2.6vw,30px);border:1px solid var(--line);border-radius:20px;overflow:hidden;
+  background:linear-gradient(158deg,color-mix(in srgb,var(--accent) 13%,var(--surface)),var(--surface) 68%);
+  transition:transform .22s var(--ease),border-color .17s ease,box-shadow .20s ease;
+  transform-style:preserve-3d;will-change:transform;
+}
+.cat-card:nth-child(1){grid-column:span 7;min-height:330px}
+.cat-card:nth-child(2){grid-column:span 5;min-height:330px}
+.cat-card:hover{border-color:color-mix(in srgb,var(--accent) 55%,transparent);box-shadow:0 28px 70px -30px color-mix(in srgb,var(--accent) 70%,transparent)}
+.cat-card::before{content:"";position:absolute;width:190px;height:190px;right:-50px;bottom:-70px;border-radius:50%;background:var(--accent);filter:blur(64px);opacity:.10;transition:opacity .18s ease;pointer-events:none}
+.cat-card:hover::before{opacity:.22}
+.cat-card::after{content:"";position:absolute;width:270px;height:270px;left:var(--spot-x,76%);top:var(--spot-y,22%);right:auto;transform:translate(-50%,-50%);border-radius:50%;background:var(--accent);filter:blur(70px);opacity:.09;transition:opacity .16s ease,left .06s linear,top .06s linear;pointer-events:none}
+.cat-card:hover::after{opacity:.25}
+.cat-art{position:absolute;inset:0;opacity:.45;pointer-events:none;-webkit-mask-image:radial-gradient(115% 95% at 72% 8%,#000,transparent 72%);mask-image:radial-gradient(115% 95% at 72% 8%,#000,transparent 72%)}
+[data-art="grid"] .cat-art{background-image:linear-gradient(to right,rgba(23,34,56,.12) 1px,transparent 1px),linear-gradient(to bottom,rgba(23,34,56,.12) 1px,transparent 1px);background-size:22px 22px}
+[data-art="dots"] .cat-art{background-image:radial-gradient(rgba(23,34,56,.22) 1px,transparent 1px);background-size:14px 14px}
+[data-art="diag"] .cat-art{background-image:repeating-linear-gradient(45deg,rgba(23,34,56,.14) 0 1px,transparent 1px 16px)}
+[data-art="rings"] .cat-art{background-image:repeating-radial-gradient(circle at 74% 26%,transparent 0 14px,rgba(23,34,56,.14) 14px 15px)}
+[data-art="cross"] .cat-art{background-image:repeating-linear-gradient(45deg,rgba(23,34,56,.13) 0 1px,transparent 1px 17px),repeating-linear-gradient(-45deg,rgba(23,34,56,.13) 0 1px,transparent 1px 17px)}
+.cat-top{position:relative;z-index:1;display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.cat-num{font-size:11px;letter-spacing:.18em;color:var(--muted);font-variant-numeric:tabular-nums}
+.cat-icon{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;color:var(--accent);background:color-mix(in srgb,var(--accent) 16%,transparent);border:1px solid color-mix(in srgb,var(--accent) 42%,transparent)}
+.cat-icon svg{width:23px;height:23px}
+.cat-body{position:relative;z-index:1;margin-top:auto}
+.cat-body h3{font-family:var(--serif);font-weight:500;font-size:clamp(26px,3.2vw,38px);line-height:1.02;letter-spacing:-.03em;margin-bottom:8px}
+.cat-body p{font-size:13px;color:var(--muted);max-width:38ch}
+.cat-foot{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;margin-top:22px;padding-top:14px;border-top:1px solid var(--line);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.cat-arrow{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line-strong);color:var(--ink);transition:.2s}
+.cat-arrow svg{width:15px;height:15px}
+.cat-card:hover .cat-arrow{background:var(--accent);border-color:var(--accent);color:#FFFFFF;transform:translateX(3px)}
+
+/* ---------- steps ---------- */
+.steps{display:grid;grid-template-columns:1fr 46px 1fr 46px 1fr;gap:clamp(6px,.8vw,10px);align-items:stretch}
+.step{position:relative;padding:clamp(22px,2.7vw,32px);border:1px solid var(--line);border-radius:18px;background:linear-gradient(155deg,color-mix(in srgb,var(--step,var(--lime)) 7%,var(--surface)),var(--surface) 72%);overflow:hidden;transition:transform .25s var(--ease),border-color .25s,box-shadow .25s}
+.step:hover,.step:focus-visible{transform:translateY(-5px);border-color:color-mix(in srgb,var(--step,var(--lime)) 60%,white);box-shadow:0 24px 50px -28px color-mix(in srgb,var(--step,var(--lime)) 55%,transparent)}
+.step-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.step .n{font-family:var(--serif);font-size:52px;line-height:.9;color:var(--step,var(--lime))}
+.step-icon{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;color:var(--step,var(--lime));background:color-mix(in srgb,var(--step,var(--lime)) 13%,transparent);border:1px solid color-mix(in srgb,var(--step,var(--lime)) 32%,transparent)}
+.step-icon svg{width:17px;height:17px}
+.step h3{font-family:var(--serif);font-weight:500;font-size:clamp(21px,2.4vw,27px);line-height:1.1;margin:16px 0 6px;letter-spacing:-.02em}
+.step p{font-size:13px;color:var(--muted)}
+.step::after{content:"";position:absolute;inset:auto -20% -50% auto;width:180px;height:180px;border-radius:50%;background:var(--step,var(--lime));opacity:.07;filter:blur(40px)}
+.step-arrow{display:grid;place-items:center;width:38px;height:38px;padding:0;line-height:0;place-self:center;border:1px solid var(--line-strong);border-radius:50%;background:rgba(255,255,255,.78);color:#9AA6BB;opacity:.55;transform:scale(.92);transition:color .3s,border-color .3s,background .3s,opacity .3s,transform .3s;box-shadow:0 5px 16px rgba(37,49,73,.06)}
+.step-arrow svg{width:18px;height:18px;display:block;transition:transform .3s}
+.step-arrow.is-lit{color:#26344D;border-color:var(--lime);background:linear-gradient(135deg,#D8F5A7,#DCE7FF);opacity:1;transform:scale(1.08);animation:arrowPulse 1.15s ease-in-out infinite}
+.step-arrow.is-lit svg{transform:none}
+.step.is-current{border-color:color-mix(in srgb,var(--step,var(--lime)) 62%,white);box-shadow:0 24px 48px -26px color-mix(in srgb,var(--step,var(--lime)) 62%,transparent);transform:translateY(-5px)}
+.step.is-complete{border-color:color-mix(in srgb,var(--step,var(--lime)) 34%,transparent)}
+.step:focus-visible{outline:3px solid color-mix(in srgb,var(--step,var(--lime)) 68%,white);outline-offset:4px}
+@keyframes arrowPulse{0%,100%{box-shadow:0 0 0 0 color-mix(in srgb,var(--lime) 0%,transparent)}50%{box-shadow:0 0 0 7px color-mix(in srgb,var(--lime) 18%,transparent)}}
+.section[id]{scroll-margin-top:104px}
+
+/* ---------- page head ---------- */
+.page-head{padding:clamp(36px,5vw,68px) 0 clamp(28px,4vw,48px);border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+.page-head::after{content:"";position:absolute;right:-10%;top:-120%;width:520px;height:520px;border-radius:50%;background:var(--accent,var(--lime));opacity:.10;filter:blur(90px);pointer-events:none}
+.crumbs{display:flex;flex-wrap:wrap;gap:9px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:24px}
+.crumbs a:hover{color:var(--lime)}
+.crumbs span:last-child{color:var(--ink)}
+.page-head h1{font-family:var(--serif);font-weight:500;font-size:clamp(46px,7vw,84px);line-height:.92;letter-spacing:-.04em;margin:0 0 12px}
+.lede{max-width:58ch;color:var(--muted);font-size:16px}
+.page-head-row{display:flex;justify-content:space-between;align-items:flex-end;gap:24px}
+.page-count{text-align:right;white-space:nowrap}
+.page-count b{display:block;font-family:var(--serif);font-size:clamp(30px,4vw,44px);font-weight:500;line-height:1;color:var(--accent,var(--lime))}
+.page-count span{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.topic-head{display:grid;grid-template-columns:1.5fr .5fr;gap:clamp(24px,4vw,56px);align-items:end}
+.topic-head h1{margin:12px 0}
+.topic-meta{display:grid;gap:12px;border-top:1px solid var(--line);padding-top:14px}
+.topic-meta div{display:flex;justify-content:space-between;gap:16px}
+.topic-meta dt{font-size:9px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted)}
+.topic-meta dd{font-size:13px;text-align:right}
+
+/* ---------- tags ---------- */
+.tag{display:inline-flex;align-items:center;gap:6px;font-size:9px;letter-spacing:.12em;text-transform:uppercase;border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);background:color-mix(in srgb,var(--accent) 10%,transparent);padding:4px 9px;border-radius:999px;color:var(--accent)}
+
+/* ---------- filters ---------- */
+.filters{display:flex;flex-wrap:wrap;gap:12px 26px;margin-bottom:28px}
+.chip-group{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.chip-label{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-right:4px}
+.chip{font-size:10px;letter-spacing:.07em;text-transform:uppercase;border:1px solid var(--line-strong);background:transparent;color:var(--muted);padding:7px 12px;border-radius:999px;transition:.18s}
+.chip:hover{border-color:var(--ink);color:var(--ink)}
+.chip.is-on{background:var(--accent,var(--lime));border-color:var(--accent,var(--lime));color:#FFFFFF;font-weight:500}
+
+/* ---------- topic cards ---------- */
+.topic-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(12px,1.6vw,18px)}
+.topic-card{
+  position:relative;display:block;border:1px solid var(--line);border-radius:18px;padding:clamp(22px,2.8vw,32px);
+  background:linear-gradient(160deg,color-mix(in srgb,var(--accent) 7%,var(--surface)),var(--surface) 70%);
+  overflow:hidden;transition:transform .25s var(--ease),border-color .25s,box-shadow .25s;
+}
+.topic-card:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--accent) 50%,transparent);box-shadow:0 22px 50px -26px color-mix(in srgb,var(--accent) 60%,transparent)}
+.topic-card .card-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:clamp(26px,4vw,42px)}
+.topic-card .idx{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.topic-card h3{font-family:var(--serif);font-weight:500;font-size:clamp(28px,3.6vw,40px);line-height:1;letter-spacing:-.03em;margin:0 0 10px}
+.topic-card p{color:var(--muted);font-size:13px;max-width:40ch}
+.card-foot{display:flex;align-items:center;justify-content:space-between;margin-top:clamp(22px,4vw,36px);padding-top:14px;border-top:1px solid var(--line);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.card-foot .go{color:var(--accent,var(--lime));display:inline-flex;align-items:center;gap:6px}
+.card-foot .go svg{width:13px;height:13px}
+
+/* ---------- facts & insights cards ---------- */
+.insight-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,1.8vw,20px)}
+.insight-card{position:relative;isolation:isolate;min-height:235px;padding:clamp(22px,2.6vw,30px);overflow:hidden;border:1px solid var(--line-strong);border-radius:20px;background:linear-gradient(145deg,var(--surface),color-mix(in srgb,var(--surface-2) 76%,var(--accent) 7%));box-shadow:0 12px 30px -24px rgba(25,45,45,.24);transition:transform .24s var(--ease),border-color .2s,box-shadow .2s}
+.insight-card::before{content:"";position:absolute;z-index:-1;width:180px;height:180px;right:-55px;bottom:-70px;border-radius:50%;background:var(--accent);opacity:.11;filter:blur(40px);transition:opacity .2s,transform .3s var(--ease)}
+.insight-card:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--accent) 54%,var(--line-strong));box-shadow:0 22px 44px -28px color-mix(in srgb,var(--accent) 46%,transparent)}
+.insight-card:hover::before{opacity:.22;transform:scale(1.15)}
+.insight-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:28px}
+.insight-index{font-family:var(--serif);font-size:29px;line-height:1;color:var(--accent)}
+.insight-tag{font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 34%,transparent);background:color-mix(in srgb,var(--accent) 8%,transparent);border-radius:999px;padding:6px 10px}
+.insight-card h3{font-family:var(--serif);font-size:clamp(21px,2.2vw,27px);font-weight:500;line-height:1.08;letter-spacing:-.025em;margin:0 0 10px;max-width:25ch}
+.insight-card p{font-size:13px;line-height:1.65;color:var(--muted);max-width:48ch}
+.insight-card:nth-child(2){--accent:#426B9A!important}
+.insight-card:nth-child(3){--accent:#267463!important}
+.insight-card:nth-child(4){--accent:#725BA8!important}
+.insight-card:nth-child(5){--accent:#94702A!important}
+.insight-card:nth-child(6){--accent:#B94D3D!important}
+
+/* ---------- resource cards ---------- */
+.res-list{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(12px,1.6vw,18px)}
+.res-card{
+  position:relative;display:flex;flex-direction:column;border:1px solid var(--line);border-radius:18px;
+  padding:clamp(22px,2.8vw,30px);background:var(--surface);
+  transition:transform .25s var(--ease),border-color .25s,box-shadow .25s;
+}
+.res-card:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--accent) 48%,transparent);box-shadow:0 22px 50px -28px color-mix(in srgb,var(--accent) 60%,transparent)}
+.res-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:20px}
+.res-num{font-family:var(--serif);font-size:42px;line-height:1;color:var(--accent,var(--lime))}
+.type-badge{display:inline-flex;align-items:center;gap:6px;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:5px 9px}
+.type-badge svg{width:13px;height:13px;stroke:var(--accent,var(--lime))}
+.res-card h3{font-size:19px;font-weight:500;line-height:1.28;margin:0 0 5px;letter-spacing:-.01em}
+.res-card .prov{font-size:12px;color:var(--muted);margin-bottom:16px}
+.res-card .meta-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.res-card .meta-row span{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 8px}
+.res-card .why{font-size:13px;color:var(--muted);border-left:2px solid var(--accent,var(--lime));padding-left:12px;margin:0 0 24px}
+.res-card .open{margin-top:auto;display:inline-flex;align-items:center;justify-content:space-between;gap:8px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent,var(--lime));border-top:1px solid var(--line);padding-top:15px}
+.res-card .open svg{width:15px;height:15px;transition:transform .18s}
+.res-card .open:hover svg{transform:translate(2px,-2px)}
+
+.next-topic{display:flex;justify-content:space-between;align-items:baseline;gap:16px;border-top:1px solid var(--line);margin-top:clamp(32px,5vw,48px);padding-top:18px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.next-topic a{color:var(--accent,var(--lime))}
+
+/* ---------- search ---------- */
+.result-count{font-size:11px;color:var(--muted);margin:14px 0 0;min-height:1.2em}
+.results{display:grid}
+.result{display:block;padding:22px 0;border-top:1px solid var(--line);transition:padding .2s var(--ease),background .2s}
+.result:hover,.result.is-active{padding-left:14px;background:rgba(23,34,56,.03)}
+.result-cat{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent,var(--lime))}
+.result h3{font-family:var(--serif);font-weight:500;font-size:clamp(24px,3vw,32px);line-height:1.05;margin:4px 0}
+.result p{color:var(--muted);font-size:13px;max-width:70ch}
+.result-hits{display:block;margin-top:6px;font-size:11px;color:var(--muted)}
+mark{background:var(--lime);color:#FFFFFF;padding:0 2px;border-radius:2px}
+.suggestions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.suggestions button{font-size:10px;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--line-strong);background:transparent;padding:7px 13px;border-radius:999px;color:var(--muted)}
+.suggestions button:hover{border-color:var(--lime);color:var(--lime)}
+.empty{padding:36px 0;color:var(--muted)}
+.empty p{margin:0 0 4px}
+
+/* ---------- about / how ---------- */
+.prose-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,4vw,56px) clamp(32px,6vw,80px)}
+.prose h2{font-family:var(--serif);font-weight:500;font-size:clamp(22px,2.6vw,30px);line-height:1.1;letter-spacing:-.02em;margin:0 0 10px}
+.prose p{color:var(--muted);font-size:14px}
+.prose code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9em;background:var(--surface-2);padding:2px 5px;border-radius:4px}
+.criteria{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.criterion{display:flex;gap:12px;padding:16px;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.criterion .check{flex:none;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:rgba(183,227,107,.14);color:var(--lime)}
+.criterion .check svg{width:13px;height:13px}
+.criterion h3{font-size:13px;font-weight:500;margin:0 0 2px}
+.criterion p{font-size:12px;color:var(--muted)}
+.faq{display:grid;gap:10px;max-width:820px}
+.faq details{border:1px solid var(--line);border-radius:14px;background:var(--surface);padding:0 18px}
+.faq summary{cursor:pointer;padding:16px 0;font-size:14px;font-weight:500;list-style:none;display:flex;justify-content:space-between;gap:16px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";color:var(--lime);font-size:18px;line-height:1}
+.faq details[open] summary::after{content:"−"}
+.faq details p{padding-bottom:16px;color:var(--muted);font-size:13px;max-width:70ch}
+.text-link{color:var(--lime);font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+
+/* ---------- progress ---------- */
+.progress{position:fixed;top:0;left:0;height:2px;width:100%;background:var(--lime);transform:scaleX(0);transform-origin:left;z-index:70;box-shadow:0 0 12px rgba(183,227,107,.5)}
+
+/* ---------- menu ---------- */
+.menu-sheet{position:fixed;inset:0;z-index:110;background:rgba(246,247,251,.98);backdrop-filter:blur(18px);padding:20px var(--gutter);display:flex;flex-direction:column}
+.menu-sheet[hidden]{display:none}
+.menu-top{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:16px}
+.menu-close{border:1px solid var(--line-strong);background:transparent;border-radius:999px;padding:8px 14px;font-size:10px;letter-spacing:.12em;text-transform:uppercase}
+.menu-nav{display:flex;flex-direction:column;margin-top:16px}
+.menu-nav a{font-family:var(--serif);font-size:clamp(34px,9vw,52px);line-height:1.1;padding:16px 0;border-bottom:1px solid var(--line);letter-spacing:-.03em}
+.menu-nav a:hover{color:var(--lime)}
+
+/* ---------- footer ---------- */
+.site-footer{background:var(--bg-2);border-top:1px solid var(--line);padding:clamp(30px,4vw,46px) 0 20px}
+.foot{display:flex;align-items:flex-start;justify-content:space-between;gap:28px;flex-wrap:wrap}
+.foot-left{display:flex;flex-direction:column;gap:10px}
+.foot-brand .mark{width:42px;height:42px}
+.foot-brand .wordmark{font-size:25px}
+.foot-left p{color:var(--muted);max-width:36ch;font-size:12px}
+.foot-nav{display:flex;gap:22px;flex-wrap:wrap;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.foot-nav a:hover{color:var(--lime)}
+.foot-bottom{margin-top:26px;padding-top:14px;border-top:1px solid var(--line);font-size:10px;letter-spacing:.06em;color:var(--muted)}
+.foot-wordmark{font-family:var(--serif);font-size:30px;font-weight:600;letter-spacing:-.055em;line-height:1;background:linear-gradient(108deg,#243B43 0%,#4C795B 52%,#527B96 100%);background-size:100% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;transition:filter .2s}
+.foot-wordmark:hover{filter:drop-shadow(0 5px 12px rgba(65,109,88,.20))}
+
+/* ---------- motion ---------- */
+@keyframes drift{
+  0%{transform:translate3d(-2%,-1%,0) scale(1)}
+  100%{transform:translate3d(3%,2%,0) scale(1.06)}
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes brandLetterStep{from{opacity:0;transform:translateY(15px) scale(.94);filter:blur(4px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+@keyframes marquee{to{transform:translateX(-50%)}}
+@keyframes pageIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+.page-enter{animation:pageIn .5s var(--ease) both}
+html.js [data-reveal]{opacity:0;transform:translateY(16px);transition:opacity .6s var(--ease),transform .6s var(--ease);transition-delay:var(--d,0s)}
+html.js [data-reveal].in{opacity:1;transform:none}
+html.js .cat-card[data-reveal]{transition:opacity .58s var(--ease) var(--d,0s),transform .22s var(--ease),border-color .17s ease,box-shadow .20s ease}
+
+@media (max-width:1180px){
+  .hero-visual{display:none}
+}
+
+/* ---------- responsive ---------- */
+@media (max-width:1023px){
+  .insight-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cat-card,.cat-card:nth-child(1),.cat-card:nth-child(2),.cat-card:nth-child(3),.cat-card:nth-child(4),.cat-card:nth-child(5){grid-column:span 6;min-height:280px}
+  .cat-card:last-child{grid-column:span 12;min-height:240px}
+  .res-list{grid-template-columns:1fr}
+  .topic-head{grid-template-columns:1fr;align-items:start}
+  .topic-meta{max-width:380px}
+}
+
+@media (max-width:900px){
+  .hero-row{grid-template-columns:1fr}
+  .topic-grid{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr}
+  .step-arrow{width:34px;height:34px;transform:none}
+  .step-arrow svg{transform:rotate(90deg)}
+  .step-arrow.is-lit{transform:scale(1.08)}
+  .step-arrow.is-lit svg{transform:rotate(90deg)}
+  .prose-grid{grid-template-columns:1fr}
+}
+
+@media (max-width:767px){
+  .insight-grid{grid-template-columns:1fr}
+  .mast-nav,.mast-cta{display:none}
+  .menu-btn{display:inline-block}
+  .hero h1{font-size:clamp(58px,14vw,88px);gap:.005em}
+  .page-head-row{align-items:flex-start;flex-direction:column;gap:12px}
+  .page-count{text-align:left}
+  .filters{flex-wrap:nowrap;overflow-x:auto;padding-bottom:8px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .filters::-webkit-scrollbar{display:none}
+  .chip-group{flex:none}
+  .cat-card,.cat-card:nth-child(1),.cat-card:nth-child(2),.cat-card:nth-child(3),.cat-card:nth-child(4),.cat-card:nth-child(5),.cat-card:last-child{grid-column:span 12;min-height:250px}
+  .criteria{grid-template-columns:1fr}
+  .foot{flex-direction:column;gap:18px}
+  .search-box{padding-left:14px}
+  .search-box button{padding:10px 14px}
+  .sec-head{flex-direction:column;align-items:flex-start;gap:10px}
+  .sec-note{text-align:left;max-width:none}
+  .page-head h1{font-size:clamp(40px,11vw,58px)}
+  .topic-head h1{font-size:clamp(38px,10vw,54px)}
+}
+
+@media (max-width:420px){
+  .wrap{padding:0 16px}
+  .hero-sub{font-size:22px}
+  .stats div{padding-right:18px}
+  .res-top{flex-direction:column;align-items:flex-start;gap:8px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+  .hero h1{filter:none!important}.hero h1 span{opacity:1!important;transform:none!important;filter:none!important}
+  html.js [data-reveal]{opacity:1!important;transform:none!important}
+  .bg::before{animation:none}
+  .marquee-track{animation:none}
+}
+
+/* ---------- added components ---------- */
+.marquee:hover .marquee-track{animation-play-state:paused}
+
+.brand .wordmark{transition:filter .18s ease}
+.brand:hover .wordmark{filter:drop-shadow(0 4px 8px rgba(65,109,88,.18))}
+
+.page-glyph{
+  position:absolute;right:clamp(16px,4vw,56px);top:-118px;
+  color:var(--accent,var(--lime));opacity:.10;pointer-events:none;
+}
+.page-glyph svg{width:clamp(140px,20vw,260px);height:clamp(140px,20vw,260px);stroke-width:.9}
+
+.tag svg{width:12px;height:12px;flex:none}
+
+.prov-row{display:flex;align-items:center;gap:10px;margin:0 0 16px}
+.res-card .prov-row .prov{margin:0}
+.res-mark{
+  flex:none;width:26px;height:26px;border-radius:8px;display:grid;place-items:center;
+  font-size:11px;font-weight:700;color:var(--accent,var(--lime));
+  background:color-mix(in srgb,var(--accent,var(--lime)) 14%,transparent);
+  border:1px solid color-mix(in srgb,var(--accent,var(--lime)) 34%,transparent);
+}
+.res-card .meta-row span{display:inline-flex;align-items:center;gap:5px}
+.res-card .meta-row svg{width:11px;height:11px;stroke:var(--accent,var(--lime))}
+
+.next-topic a{display:inline-flex;align-items:center;gap:8px}
+.next-topic svg{width:14px;height:14px}
+
+.how-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(12px,1.6vw,18px)}
+.how-card{
+  position:relative;padding:clamp(22px,2.8vw,32px);border:1px solid var(--line);border-radius:18px;
+  background:var(--surface);overflow:hidden;transition:transform .25s var(--ease),border-color .25s;
+}
+.how-card:hover{transform:translateY(-3px);border-color:var(--line-strong)}
+.how-card::after{
+  content:"";position:absolute;right:-40px;bottom:-60px;width:170px;height:170px;border-radius:50%;
+  background:var(--lime);opacity:.06;filter:blur(46px);pointer-events:none;
+}
+.how-n{font-family:var(--serif);font-size:13px;letter-spacing:.16em;color:var(--lime)}
+.how-card h3{font-family:var(--serif);font-weight:500;font-size:clamp(21px,2.4vw,27px);line-height:1.1;letter-spacing:-.02em;margin:12px 0 6px}
+.how-card p{font-size:13px;color:var(--muted);max-width:44ch}
+
+.search-box.search-page{margin-top:22px}
+.search-box input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none}
+
+@media (max-width:900px){
+  .how-grid{grid-template-columns:1fr}
+}
+
+@media (max-width:767px){
+  .page-glyph{opacity:.07}
+  .res-mark{width:24px;height:24px}
+}
+
+
+/* ---------- V4 refinements: brand typography, balanced surfaces, compact footer ---------- */
+:root{
+  /* light canvas: the same sage family, stepped down so it never feels washed out */
+  --bg:#ACB8AF;
+  --bg-2:#9FACA2;
+  --surface:#C9D4CB;
+  --surface-2:#BBC7BD;
+  --muted:#47594F;
+  --line:rgba(24,39,34,.16);
+  --line-strong:rgba(24,39,34,.29);
+}
+
+/* Keep the CRUD identity in the same expressive Fraunces style as category titles. */
+.wordmark,.foot-wordmark{
+  font-family:var(--serif);
+  font-weight:500;
+  letter-spacing:-.03em;
+  font-optical-sizing:auto;
+  font-variation-settings:'wght' 500;
+}
+.hero h1{
+  font-family:var(--serif);
+  font-weight:500;
+  letter-spacing:-.03em;
+  font-optical-sizing:auto;
+  font-variation-settings:'wght' 500;
+}
+
+/* Tone down the canvas while retaining lighter cards for clear visual separation. */
+.masthead{background:rgba(172,184,175,.95)}
+.menu-sheet{background:rgba(172,184,175,.985)}
+.stack-card{background:linear-gradient(155deg,#C9D5CB,#B3C0B5)}
+.marquee{background:rgba(29,45,50,.035)}
+
+/* Footer: text-only identity and a little less vertical space. */
+.site-footer{padding:clamp(22px,3vw,32px) 0 14px}
+.foot-left{gap:6px}
+.foot-left p{font-size:11px;max-width:34ch}
+.foot-bottom{margin-top:18px;padding-top:10px}
+.foot-brand{gap:0}
+
+
+/* ==========================================================================
+   THEME SYSTEM (added)
+   Light = the original learning-atlas palette, stepped one notch deeper.
+   Dark = deep ink-navy canvas with lime, blue and violet accents. Everything below is additive and theme-aware.
+   ========================================================================== */
+
+:root{
+  /* themeable surfaces, effects and accents (light) */
+  --masthead:rgba(172,184,175,.95);
+  --sheet:rgba(172,184,175,.985);
+  --field:color-mix(in srgb,var(--surface) 62%,transparent);
+  --stack-a:#C9D5CB;
+  --stack-b:#B3C0B5;
+  --ghost-line:rgba(23,34,56,.09);
+  --ghost-line-2:rgba(23,34,56,.10);
+  --art-line:rgba(23,34,56,.12);
+  --art-line-strong:rgba(23,34,56,.22);
+  --tint:rgba(23,34,56,.03);
+  --marquee-bg:rgba(24,39,34,.045);
+  --arrow-bg:rgba(255,255,255,.66);
+  --arrow-ink:#8593A6;
+  --on-accent:#FFFFFF;
+  --shadow-1:rgba(37,49,73,.22);
+  --shadow-2:rgba(25,45,45,.24);
+  --shadow-3:rgba(37,49,73,.06);
+  --headline-1:#263F45;
+  --headline-2:#47796A;
+  --headline-3:#7DA647;
+  --headline-4:#527C9A;
+  --word-a:#243B43;
+  --word-b:#4C795B;
+  --word-c:#527B96;
+  --glow-1:rgba(112,151,121,.17);
+  --glow-2:rgba(110,139,177,.13);
+  --glow-3:rgba(119,163,139,.12);
+  --acc-programming:#4F7519;
+  --acc-resume:#BA422D;
+  --acc-companies:#3B5EA8;
+  --acc-emerging:#126E5C;
+  --acc-facts:#694DBB;
+  --acc-blue:#426B9A;
+  --acc-teal:#267463;
+  --acc-violet:#725BA8;
+  --acc-gold:#94702A;
+  --acc-coral:#B94D3D;
+  --step-1:#4F7519;
+  --step-2:#3B5EA8;
+  --step-3:#126E5C;
+  --contours:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%201600%201000%22%20fill%3D%22none%22%3E%0A%3Cpath%20d%3D%22M-120%20690C120%20520%20260%20790%20500%20625S870%20310%201110%20475s390%2080%20610-115%22%20stroke%3D%22%238EA18E%22%20stroke-opacity%3D%22.28%22%20stroke-width%3D%222%22%2F%3E%0A%3Cpath%20d%3D%22M-130%20760C105%20590%20290%20855%20530%20690S900%20375%201140%20540s380%2080%20600-110%22%20stroke%3D%22%238EA18E%22%20stroke-opacity%3D%22.19%22%20stroke-width%3D%222%22%2F%3E%0A%3Cpath%20d%3D%22M-90%20830C150%20660%20330%20920%20580%20755S950%20440%201190%20605s360%2080%20570-105%22%20stroke%3D%22%238EA18E%22%20stroke-opacity%3D%22.15%22%20stroke-width%3D%222%22%2F%3E%0A%3Cpath%20d%3D%22M-120%20410C125%20250%20300%20510%20540%20365S900%20120%201140%20280s390%2080%20610-95%22%20stroke%3D%22%238EA18E%22%20stroke-opacity%3D%22.15%22%20stroke-width%3D%222%22%2F%3E%0A%3Cpath%20d%3D%22M-80%20485C165%20325%20340%20585%20580%20440S940%20195%201180%20355s380%2080%20590-90%22%20stroke%3D%22%238EA18E%22%20stroke-opacity%3D%22.12%22%20stroke-width%3D%222%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+html[data-theme="dark"]{
+  color-scheme:dark;
+  /* ink-navy canvas, matched to the reference dark build */
+  --bg:#070A12;
+  --bg-2:#0B1020;
+  --surface:#101728;
+  --surface-2:#151D33;
+  --ink:#F4F1E8;
+  --muted:#98A2B3;
+  --line:rgba(244,241,232,.10);
+  --line-strong:rgba(244,241,232,.20);
+  --lime:#C8FF5A;
+  --coral:#FF6B4A;
+  --blue:#6C8CFF;
+  --teal:#4FE3C1;
+  --violet:#A78BFA;
+  --gold:#F5C451;
+  --masthead:rgba(7,10,18,.72);
+  --sheet:rgba(7,10,18,.96);
+  --field:color-mix(in srgb,var(--surface) 72%,transparent);
+  --stack-a:#19223B;
+  --stack-b:#0D1322;
+  --ghost-line:rgba(244,241,232,.08);
+  --ghost-line-2:rgba(244,241,232,.10);
+  --art-line:rgba(244,241,232,.10);
+  --art-line-strong:rgba(244,241,232,.18);
+  --tint:rgba(244,241,232,.05);
+  --marquee-bg:rgba(244,241,232,.03);
+  --arrow-bg:rgba(244,241,232,.06);
+  --arrow-ink:#8892A6;
+  --on-accent:#070A12;
+  --shadow-1:rgba(2,5,14,.60);
+  --shadow-2:rgba(2,5,14,.55);
+  --shadow-3:rgba(2,5,14,.40);
+  --headline-1:#F4F1E8;
+  --headline-2:#C8FF5A;
+  --headline-3:#6C8CFF;
+  --headline-4:#A78BFA;
+  --word-a:#F4F1E8;
+  --word-b:#E2FDB4;
+  --word-c:#BFCDFF;
+  --glow-1:rgba(108,140,255,.28);
+  --glow-2:rgba(167,139,250,.19);
+  --glow-3:rgba(79,227,193,.13);
+  --acc-programming:#C8FF5A;
+  --acc-resume:#FF6B4A;
+  --acc-companies:#6C8CFF;
+  --acc-emerging:#4FE3C1;
+  --acc-facts:#A78BFA;
+  --acc-blue:#6C8CFF;
+  --acc-teal:#4FE3C1;
+  --acc-violet:#A78BFA;
+  --acc-gold:#F5C451;
+  --acc-coral:#FF6B4A;
+  --step-1:#C8FF5A;
+  --step-2:#6C8CFF;
+  --step-3:#4FE3C1;
+  --contours:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%201600%201000%22%20fill%3D%22none%22%3E%0A%3Cpath%20d%3D%22M-120%20690C120%20520%20260%20790%20500%20625S870%20310%201110%20475s390%2080%20610-115%22%20stroke%3D%22%2344507C%22%20stroke-opacity%3D%22.28%22%20stroke-width%3D%222%22%2F%3E%0A%3Cpath%20d%3D%22M-130%20760C105%20590%20290%20855%20530%20690S900%20375%201140%20540s380%2080%20600-110%22%20stroke%3D%22%2344507C%22%20stroke-opacity%3D%22.19%22%20stroke-width%3D%222%22%2F%3E%0A%3Cpath%20d%3D%22M-90%20830C150%20660%20330%20920%20580%20755S950%20440%201190%20605s360%2080%20570-105%22%20stroke%3D%22%2344507C%22%20stroke-opacity%3D%22.15%22%20stroke-width%3D%222%22%2F%3E%0A%3Cpath%20d%3D%22M-120%20410C125%20250%20300%20510%20540%20365S900%20120%201140%20280s390%2080%20610-95%22%20stroke%3D%22%2344507C%22%20stroke-opacity%3D%22.15%22%20stroke-width%3D%222%22%2F%3E%0A%3Cpath%20d%3D%22M-80%20485C165%20325%20340%20585%20580%20440S940%20195%201180%20355s380%2080%20590-90%22%20stroke%3D%22%2344507C%22%20stroke-opacity%3D%22.12%22%20stroke-width%3D%222%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+/* smooth palette change, but never on layout or hover effects */
+html,body,.masthead,.site-footer,.menu-sheet,.search-box{
+  transition:background-color .3s ease,color .3s ease,border-color .3s ease;
+}
+
+/* surfaces ---------------------------------------------------------------- */
+.masthead{background:var(--masthead)}
+.menu-sheet{background:var(--sheet)}
+.menu-top-actions{display:flex;align-items:center;gap:8px}
+.stack-card{background:linear-gradient(155deg,var(--stack-a),var(--stack-b));box-shadow:0 22px 54px -34px var(--shadow-1)}
+.stack-lines i{background:var(--ghost-line)}
+.stack-progress{background:var(--ghost-line-2)}
+.search-box{background:var(--field);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.search-box input{caret-color:var(--lime)}
+.marquee{background:var(--marquee-bg)}
+.result:hover,.result.is-active{background:var(--tint)}
+
+/* artwork ---------------------------------------------------------------- */
+[data-art="grid"] .cat-art{background-image:linear-gradient(to right,var(--art-line) 1px,transparent 1px),linear-gradient(to bottom,var(--art-line) 1px,transparent 1px)}
+[data-art="dots"] .cat-art{background-image:radial-gradient(var(--art-line-strong) 1px,transparent 1px)}
+[data-art="diag"] .cat-art{background-image:repeating-linear-gradient(45deg,var(--art-line) 0 1px,transparent 1px 16px)}
+[data-art="rings"] .cat-art{background-image:repeating-radial-gradient(circle at 74% 26%,transparent 0 14px,var(--art-line) 14px 15px)}
+[data-art="cross"] .cat-art{background-image:repeating-linear-gradient(45deg,var(--art-line) 0 1px,transparent 1px 17px),repeating-linear-gradient(-45deg,var(--art-line) 0 1px,transparent 1px 17px)}
+
+/* brand gradients and headings ------------------------------------------- */
+.hero h1{background-image:linear-gradient(105deg,var(--headline-1) 0%,var(--headline-2) 38%,var(--headline-3) 68%,var(--headline-4) 100%)}
+.wordmark,.foot-wordmark{background-image:linear-gradient(108deg,var(--word-a) 0%,var(--word-b) 52%,var(--word-c) 100%)}
+.bg::before{background:
+  radial-gradient(640px 460px at 10% 7%,var(--glow-1),transparent 64%),
+  radial-gradient(720px 520px at 90% 12%,var(--glow-2),transparent 66%),
+  radial-gradient(760px 560px at 54% 105%,var(--glow-3),transparent 68%)}
+.bg::after{background-image:var(--contours)}
+
+/* accent-on-fill text ---------------------------------------------------- */
+::selection{color:var(--on-accent)}
+.skip{color:var(--on-accent)}
+.search-box button{color:var(--on-accent)}
+.stack-badge{color:var(--on-accent)}
+.cat-card:hover .cat-arrow{color:var(--on-accent)}
+.chip.is-on{color:var(--on-accent)}
+mark{background:var(--lime);color:var(--on-accent)}
+
+/* how-it-works circles: perfectly round, arrow dead-centre ---------------- */
+.step-arrow{display:grid;place-items:center;padding:0;line-height:0;background:var(--arrow-bg);color:var(--arrow-ink);box-shadow:0 5px 16px var(--shadow-3)}
+.step-arrow svg{display:block;margin:0}
+.step-arrow.is-lit svg{transform:none}
+@media (max-width:900px){
+  .step-arrow{width:34px;height:34px;transform:none}
+  .step-arrow svg{transform:rotate(90deg)}
+  .step-arrow.is-lit{transform:scale(1.08)}
+  .step-arrow.is-lit svg{transform:rotate(90deg)}
+}
+
+/* meta accents ----------------------------------------------------------- */
+.insight-card:nth-child(2){--accent:var(--acc-blue)!important}
+.insight-card:nth-child(3){--accent:var(--acc-teal)!important}
+.insight-card:nth-child(4){--accent:var(--acc-violet)!important}
+.insight-card:nth-child(5){--accent:var(--acc-gold)!important}
+.insight-card:nth-child(6){--accent:var(--acc-coral)!important}
+.insight-card{box-shadow:0 12px 30px -24px var(--shadow-2)}
+
+/* theme toggle ----------------------------------------------------------- */
+.mast-end{display:flex;align-items:center;gap:10px}
+.theme-btn{
+  display:inline-grid;place-items:center;width:36px;height:36px;padding:0;flex:none;
+  border:1px solid var(--line-strong);border-radius:999px;background:transparent;color:var(--muted);
+  transition:color .18s,border-color .18s,background .18s,transform .18s var(--ease);
+}
+.theme-btn:hover{color:var(--ink);border-color:var(--lime);transform:translateY(-1px)}
+.theme-btn:active{transform:translateY(0)}
+.theme-btn svg{width:16px;height:16px;display:block}
+.theme-btn .i-sun{display:none}
+html[data-theme="dark"] .theme-btn .i-sun{display:block}
+html[data-theme="dark"] .theme-btn .i-moon{display:none}
+html[data-theme="dark"] .theme-btn{background:rgba(244,241,232,.04)}
+@media (max-width:767px){
+  .theme-btn{width:34px;height:34px}
+  .mast-end{gap:8px}
+}
+
+/* dark-only refinements -------------------------------------------------- */
+/* brand tile picks up the lime-to-blue of the reference dark build */
+html[data-theme="dark"] .mark{
+  background:linear-gradient(135deg,#C8FF5A 0%,#6C8CFF 100%);
+  color:#070A12;
+  box-shadow:0 0 0 1px rgba(255,255,255,.10),0 10px 26px -10px rgba(200,255,90,.55);
+}
+html[data-theme="dark"] .brand:hover .mark{
+  box-shadow:0 0 0 1px rgba(255,255,255,.18),0 14px 32px -10px rgba(200,255,90,.70);
+}
+html[data-theme="dark"] .hero h1{filter:drop-shadow(0 10px 26px rgba(3,7,20,.60))}
+html[data-theme="dark"] .page-head::after{opacity:.16}
+html[data-theme="dark"] .grain{opacity:.04}
+html[data-theme="dark"] .bg::after{opacity:.55}
+html[data-theme="dark"] .site-footer{border-top-color:rgba(244,241,232,.14)}
+html[data-theme="dark"] .cat-card:hover .cat-arrow{color:var(--on-accent)}
+
+/* lime tints that were baked into the light palette */
+html[data-theme="dark"] .mast-cta:hover{background:color-mix(in srgb,var(--lime) 8%,transparent)}
+html[data-theme="dark"] .stack::before{background:radial-gradient(circle at 60% 40%,rgba(200,255,90,.16),rgba(108,140,255,.18) 45%,transparent 72%)}
+html[data-theme="dark"] .hero-visual:hover .stack-front{box-shadow:0 34px 70px -30px rgba(200,255,90,.30)}
+html[data-theme="dark"] .stack-icon{background:rgba(200,255,90,.10);border-color:rgba(200,255,90,.26)}
+html[data-theme="dark"] .search-box:focus-within{box-shadow:0 0 0 4px rgba(200,255,90,.18)}
+html[data-theme="dark"] .search-box button:hover{box-shadow:0 8px 24px -8px rgba(200,255,90,.55)}
+html[data-theme="dark"] .stack-badge{box-shadow:0 12px 30px -10px rgba(200,255,90,.45)}
+html[data-theme="dark"] .criterion .check{background:rgba(200,255,90,.14)}
+html[data-theme="dark"] .progress{box-shadow:0 0 12px rgba(200,255,90,.50)}
+
+/* lit step arrow: same lime-to-blue language */
+html[data-theme="dark"] .step-arrow.is-lit{
+  color:#070A12;border-color:rgba(200,255,90,.55);
+  background:linear-gradient(135deg,#C8FF5A,#6C8CFF);
+}
+
+/* steps: mix borders with the canvas instead of pure white on dark */
+html[data-theme="dark"] .step:hover,
+html[data-theme="dark"] .step:focus-visible{border-color:color-mix(in srgb,var(--step,var(--lime)) 62%,transparent)}
+html[data-theme="dark"] .step.is-current{border-color:color-mix(in srgb,var(--step,var(--lime)) 70%,transparent)}
+
+/* ---------- touch screens: give the category cards the hover language ---------- */
+@media (hover:none),(pointer:coarse){
+  .cat-card{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+
+  /* a quiet accent on the arrow so the cards read as interactive without a cursor */
+  .cat-card .cat-arrow{
+    color:var(--accent);
+    background:color-mix(in srgb,var(--accent) 12%,transparent);
+    border-color:color-mix(in srgb,var(--accent) 36%,transparent);
+  }
+
+  /* press (or keyboard focus) mirrors :hover exactly */
+  .cat-card:active,.cat-card:focus-visible,.cat-card.is-press{
+    transform:translateY(-2px);
+    border-color:color-mix(in srgb,var(--accent) 55%,transparent);
+    box-shadow:0 22px 54px -28px color-mix(in srgb,var(--accent) 70%,transparent);
+  }
+  .cat-card:active::before,.cat-card:focus-visible::before,.cat-card.is-press::before{opacity:.22}
+  .cat-card:active::after,.cat-card:focus-visible::after,.cat-card.is-press::after{opacity:.25}
+  .cat-card:active .cat-arrow,.cat-card:focus-visible .cat-arrow,.cat-card.is-press .cat-arrow{
+    background:var(--accent);border-color:var(--accent);
+    color:var(--on-accent);transform:translateX(3px);
+  }
+}
+
+</style>
+</head>
+<body>
+<a class="skip" href="#" id="skip">Skip to content</a>
+<div class="bg" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="masthead">
+  <div class="mast-in">
+    <a class="brand" href="#/" aria-label="CRUD home">
+      <span class="mark" aria-hidden="true">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.15" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5.5 14.5c6.1-2.5 12-1.8 18.5 2.2v20c-6.5-3.8-12.4-4.5-18.5-2.2z"/>
+          <path d="M42.5 14.5c-6.1-2.5-12-1.8-18.5 2.2v20c6.5-3.8 12.4-4.5 18.5-2.2z"/>
+          <path d="M10 21h7M10 27h7"/>
+          <path d="m27 31 4.2-4.2 3.2 2.1 5.1-7.2"/>
+          <path d="M34.5 21.7h5v5"/>
+          <path d="M24 16.7v19.5" opacity=".58"/>
+        </svg>
+      </span>
+      <span class="wordmark">CRUD</span>
+    </a>
+    <nav class="mast-nav" aria-label="Primary">
+      <a href="#/" data-scroll="home-categories">Categories</a>
+      <a href="#/" data-scroll="home-how">How it works</a>
+      <a href="#/about">About</a>
+    </nav>
+    <div class="mast-end">
+      <a class="mast-cta" href="#/search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        Search
+      </a>
+      <button class="theme-btn js-theme" id="theme-btn" type="button" aria-pressed="false" aria-label="Switch to dark theme" title="Switch theme">
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.6A8.3 8.3 0 0 1 9.4 4 8.3 8.3 0 1 0 20 14.6z"/></svg><svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7 4.9 19.1"/></svg>
+      </button>
+      <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
+    </div>
+  </div>
+</header>
+
+<main id="app" tabindex="-1"></main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot">
+      <div class="foot-left">
+        <a class="brand foot-brand" href="#/" aria-label="CRUD home">
+          <span class="wordmark foot-wordmark">CRUD</span>
+        </a>
+        <p>Explore. Learn. Practice. Grow.</p>
+      </div>
+      <nav class="foot-nav" aria-label="Footer">
+        <a href="#/" data-scroll="home-categories">Categories</a>
+        <a href="#/" data-scroll="home-how">How it works</a>
+        <a href="#/search">Search</a>
+        <a href="#/about">About</a>
+      </nav>
+    </div>
+    <div class="foot-bottom">
+      <span>CRUD — Continue Reading to Update and Develop</span>
+    </div>
+  </div>
+</footer>
+
+<div class="menu-sheet" id="menu" hidden>
+  <div class="menu-top">
+    <span class="brand">
+      <span class="mark" aria-hidden="true">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.15" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5.5 14.5c6.1-2.5 12-1.8 18.5 2.2v20c-6.5-3.8-12.4-4.5-18.5-2.2z"/>
+          <path d="M42.5 14.5c-6.1-2.5-12-1.8-18.5 2.2v20c6.5-3.8 12.4-4.5 18.5-2.2z"/>
+          <path d="M10 21h7M10 27h7"/>
+          <path d="m27 31 4.2-4.2 3.2 2.1 5.1-7.2"/>
+          <path d="M34.5 21.7h5v5"/>
+          <path d="M24 16.7v19.5" opacity=".58"/>
+        </svg>
+      </span>
+      <span class="wordmark">CRUD</span>
+    </span>
+    <div class="menu-top-actions">
+      <button class="theme-btn js-theme" id="theme-btn-menu" type="button" aria-pressed="false" aria-label="Switch to dark theme" title="Switch theme">
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.6A8.3 8.3 0 0 1 9.4 4 8.3 8.3 0 1 0 20 14.6z"/></svg><svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7 4.9 19.1"/></svg>
+      </button>
+      <button class="menu-close" id="menu-close" type="button">Close</button>
+    </div>
+  </div>
+  <nav class="menu-nav" aria-label="Mobile">
+    <a href="#/" data-scroll="home-categories">Categories</a>
+    <a href="#/" data-scroll="home-how">How it works</a>
+    <a href="#/search">Search</a>
+    <a href="#/about">About</a>
+  </nav>
+</div>
+
+<noscript>
+  <p style="padding:24px;font-family:system-ui,sans-serif">CRUD needs JavaScript to show the topic index.</p>
+</noscript>
+
+<script>
+/* CRUD data — 5 categories, 20 guided topics, 60 learning resources, and 6 fact cards. */
+const CRUD_DATA = {
+  "categories": [
+    {
+      "id": "programming",
+      "index": "01",
+      "title": "Programming Languages",
+      "blurb": "Eight languages and frameworks, three free resources each.",
+      "topics": [
+        {
+          "id": "python",
+          "index": "01",
+          "title": "Python",
+          "tag": "Language",
+          "summary": "Readable syntax and a large ecosystem. A common first language for data, AI, and automation.",
+          "bestFor": "Absolute beginners",
+          "time": "6–8 weeks",
+          "resources": [
+            {
+              "title": "Python Official Tutorial",
+              "provider": "Python.org",
+              "type": "docs",
+              "level": "beginner",
+              "time": "8h",
+              "url": "https://docs.python.org/3/tutorial/",
+              "why": "The official guide to Python syntax, data types, functions, and modules."
+            },
+            {
+              "title": "Python Full Course for Beginners",
+              "provider": "Bro Code · YouTube",
+              "type": "video",
+              "level": "beginner",
+              "time": "12h",
+              "url": "https://www.youtube.com/watch?v=XKHEtdqhLK8",
+              "why": "A free step-by-step video course with examples and small projects."
+            },
+            {
+              "title": "Python Practice",
+              "provider": "HackerRank",
+              "type": "practice",
+              "level": "beginner",
+              "time": "Ongoing",
+              "url": "https://www.hackerrank.com/domains/python",
+              "why": "Solve Python challenges and check your solutions in the browser."
+            }
+          ]
+        },
+        {
+          "id": "javascript",
+          "index": "02",
+          "title": "JavaScript",
+          "tag": "Language",
+          "summary": "The language of the browser. Needed for interactive pages and most web work.",
+          "bestFor": "Web beginners",
+          "time": "6–8 weeks",
+          "resources": [
+            {
+              "title": "JavaScript Guide",
+              "provider": "MDN Web Docs",
+              "type": "docs",
+              "level": "beginner",
+              "time": "10h",
+              "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide",
+              "why": "A well-organised guide to core JavaScript and browser programming."
+            },
+            {
+              "title": "JavaScript Full Course for Beginners",
+              "provider": "freeCodeCamp · YouTube",
+              "type": "video",
+              "level": "beginner",
+              "time": "3h",
+              "url": "https://www.youtube.com/watch?v=PkZNo7MFNFg",
+              "why": "A complete beginner video covering the language fundamentals."
+            },
+            {
+              "title": "JavaScript Algorithms and Data Structures",
+              "provider": "freeCodeCamp",
+              "type": "practice",
+              "level": "beginner",
+              "time": "Ongoing",
+              "url": "https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/",
+              "why": "Build confidence with interactive challenges and projects."
+            }
+          ]
+        },
+        {
+          "id": "java",
+          "index": "03",
+          "title": "Java",
+          "tag": "Language",
+          "summary": "A typed, object-oriented language used in enterprise systems and Android.",
+          "bestFor": "CS students",
+          "time": "8–10 weeks",
+          "resources": [
+            {
+              "title": "Learn Java",
+              "provider": "dev.java",
+              "type": "docs",
+              "level": "beginner",
+              "time": "12h",
+              "url": "https://dev.java/learn/",
+              "why": "Official Java learning material covering language fundamentals."
+            },
+            {
+              "title": "Java Tutorial for Beginners",
+              "provider": "Programming with Mosh · YouTube",
+              "type": "video",
+              "level": "beginner",
+              "time": "2h",
+              "url": "https://www.youtube.com/watch?v=eIrMbAQSU34",
+              "why": "A guided video introduction to Java programming."
+            },
+            {
+              "title": "Java Practice",
+              "provider": "HackerRank",
+              "type": "practice",
+              "level": "beginner",
+              "time": "Ongoing",
+              "url": "https://www.hackerrank.com/domains/java",
+              "why": "Practise Java problems from basic syntax to object-oriented concepts."
+            }
+          ]
+        },
+        {
+          "id": "cpp",
+          "index": "04",
+          "title": "C++",
+          "tag": "Language",
+          "summary": "A compiled language for performance-critical software, games, and systems.",
+          "bestFor": "Intermediate learners",
+          "time": "10–12 weeks",
+          "resources": [
+            {
+              "title": "Learn C++",
+              "provider": "LearnCpp",
+              "type": "docs",
+              "level": "beginner",
+              "time": "40h",
+              "url": "https://www.learncpp.com/",
+              "why": "A chapter-by-chapter C++ tutorial with explanations and examples."
+            },
+            {
+              "title": "C++ Programming Course",
+              "provider": "freeCodeCamp · YouTube",
+              "type": "video",
+              "level": "beginner",
+              "time": "31h",
+              "url": "https://www.youtube.com/watch?v=8jLOx1hD3_o",
+              "why": "A long-form course that moves from fundamentals to advanced topics."
+            },
+            {
+              "title": "C++ Practice",
+              "provider": "HackerRank",
+              "type": "practice",
+              "level": "beginner",
+              "time": "Ongoing",
+              "url": "https://www.hackerrank.com/domains/cpp",
+              "why": "Practise syntax, classes, STL, and problem-solving in C++."
+            }
+          ]
+        },
+        {
+          "id": "csharp",
+          "index": "05",
+          "title": "C#",
+          "tag": "Language",
+          "summary": "Microsoft's typed language for .NET, desktop, web, and Unity games.",
+          "bestFor": "Beginners and .NET developers",
+          "time": "8 weeks",
+          "resources": [
+            {
+              "title": "C# Documentation",
+              "provider": "Microsoft Learn",
+              "type": "docs",
+              "level": "beginner",
+              "time": "15h",
+              "url": "https://learn.microsoft.com/en-us/dotnet/csharp/",
+              "why": "Official C# documentation with language concepts and examples."
+            },
+            {
+              "title": "C# Tutorial for Beginners",
+              "provider": "Programming with Mosh · YouTube",
+              "type": "video",
+              "level": "beginner",
+              "time": "1h",
+              "url": "https://www.youtube.com/watch?v=gfkTfcpWqAY",
+              "why": "A focused video introduction to C# and its core building blocks."
+            },
+            {
+              "title": "C# Practice",
+              "provider": "HackerRank",
+              "type": "practice",
+              "level": "beginner",
+              "time": "Ongoing",
+              "url": "https://www.hackerrank.com/domains/csharp",
+              "why": "Try C# coding exercises and test your solutions."
+            }
+          ]
+        },
+        {
+          "id": "sql",
+          "index": "06",
+          "title": "SQL",
+          "tag": "Language",
+          "summary": "The standard language for querying and shaping relational data.",
+          "bestFor": "Anyone working with data",
+          "time": "4–6 weeks",
+          "resources": [
+            {
+              "title": "MySQL Reference Manual",
+              "provider": "MySQL",
+              "type": "docs",
+              "level": "beginner",
+              "time": "Ongoing",
+              "url": "https://dev.mysql.com/doc/",
+              "why": "Official reference for SQL statements, data types, tables, and database features."
+            },
+            {
+              "title": "SQL Tutorial — Full Database Course",
+              "provider": "freeCodeCamp · YouTube",
+              "type": "video",
+              "level": "beginner",
+              "time": "4h",
+              "url": "https://www.youtube.com/watch?v=HXV3zeQKqGY",
+              "why": "A beginner-friendly video covering MySQL, CRUD, joins, and database design."
+            },
+            {
+              "title": "SQLBolt Interactive Lessons",
+              "provider": "SQLBolt",
+              "type": "practice",
+              "level": "beginner",
+              "time": "4h",
+              "url": "https://sqlbolt.com/",
+              "why": "Learn SQL by writing queries directly in interactive exercises."
+            }
+          ]
+        },
+        {
+          "id": "django",
+          "index": "07",
+          "title": "Django",
+          "tag": "Python framework",
+          "summary": "A Python framework for building database-backed web applications.",
+          "bestFor": "Python learners moving to web",
+          "time": "6 weeks",
+          "resources": [
+            {
+              "title": "Django Official Tutorial",
+              "provider": "Django Project",
+              "type": "docs",
+              "level": "beginner",
+              "time": "10h",
+              "url": "https://docs.djangoproject.com/en/stable/intro/tutorial01/",
+              "why": "Build a database-backed Django application step by step."
+            },
+            {
+              "title": "Django Crash Course",
+              "provider": "Traversy Media · YouTube",
+              "type": "video",
+              "level": "beginner",
+              "time": "2h",
+              "url": "https://www.youtube.com/watch?v=rHux0gMZ3Eg",
+              "why": "A project-based video that introduces Django and its workflow."
+            },
+            {
+              "title": "Django Tutorial and Try It",
+              "provider": "W3Schools",
+              "type": "practice",
+              "level": "beginner",
+              "time": "Ongoing",
+              "url": "https://www.w3schools.com/django/",
+              "why": "Follow practical Django examples and experiment as you learn."
+            }
+          ]
+        },
+        {
+          "id": "web-foundations",
+          "index": "08",
+          "title": "Web Foundations",
+          "tag": "Foundations",
+          "summary": "HTML structures a page, CSS styles it. The base for every website.",
+          "bestFor": "Absolute beginners",
+          "time": "6 weeks",
+          "resources": [
+            {
+              "title": "Learn Web Development",
+              "provider": "MDN Web Docs",
+              "type": "docs",
+              "level": "beginner",
+              "time": "20h",
+              "url": "https://developer.mozilla.org/en-US/docs/Learn",
+              "why": "A structured path through HTML, CSS, JavaScript, and web basics."
+            },
+            {
+              "title": "HTML & CSS Full Course — Beginner to Pro",
+              "provider": "SuperSimpleDev · YouTube",
+              "type": "video",
+              "level": "beginner",
+              "time": "6.5h",
+              "url": "https://www.youtube.com/watch?v=G3e-cpL7ofc",
+              "why": "Build a real page while learning HTML structure and CSS layouts."
+            },
+            {
+              "title": "Responsive Web Design",
+              "provider": "freeCodeCamp",
+              "type": "practice",
+              "level": "beginner",
+              "time": "30h",
+              "url": "https://www.freecodecamp.org/learn/2022/responsive-web-design/",
+              "why": "Practise responsive layouts through guided exercises and projects."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "resume",
+      "index": "02",
+      "title": "Resume & Career",
+      "blurb": "Four practical topics for getting shortlisted.",
+      "topics": [
+        {
+          "id": "resume-templates",
+          "index": "01",
+          "title": "Resume Templates",
+          "tag": "Career",
+          "summary": "Ready-made layouts you can fill in. Pick one that stays readable as a PDF.",
+          "bestFor": "Students and freshers",
+          "time": "2 hours",
+          "resources": [
+            {
+              "title": "Create a Strong Resume",
+              "provider": "Harvard Career Services",
+              "type": "docs",
+              "level": "beginner",
+              "time": "1h",
+              "url": "https://careerservices.fas.harvard.edu/resources/create-a-strong-resume/",
+              "why": "Understand clear structure, concise writing, and readable formatting."
+            },
+            {
+              "title": "Resume Writing Video Lessons",
+              "provider": "YouTube",
+              "type": "video",
+              "level": "beginner",
+              "time": "1h",
+              "url": "https://www.youtube.com/results?search_query=resume+writing+guide+for+beginners+career+services",
+              "why": "Find free walkthroughs on resume structure, bullet points, and layout."
+            },
+            {
+              "title": "Resume Templates and Builder",
+              "provider": "Canva",
+              "type": "practice",
+              "level": "beginner",
+              "time": "1h",
+              "url": "https://www.canva.com/resumes/templates/",
+              "why": "Try building a clean resume with the available free templates."
+            }
+          ]
+        },
+        {
+          "id": "ats",
+          "index": "02",
+          "title": "ATS Optimization",
+          "tag": "Career",
+          "summary": "Most large companies screen resumes with software. Learn what it reads and what it ignores.",
+          "bestFor": "Anyone applying online",
+          "time": "1 week",
+          "resources": [
+            {
+              "title": "How Applicant Tracking Systems Work",
+              "provider": "Jobscan",
+              "type": "docs",
+              "level": "beginner",
+              "time": "20m",
+              "url": "https://www.jobscan.co/applicant-tracking-systems",
+              "why": "Learn how resume parsing and keyword matching work."
+            },
+            {
+              "title": "ATS-Friendly Resume Video Lessons",
+              "provider": "YouTube",
+              "type": "video",
+              "level": "beginner",
+              "time": "45m",
+              "url": "https://www.youtube.com/results?search_query=ATS+friendly+resume+explained+for+beginners",
+              "why": "Watch practical explanations of ATS-friendly resume formatting."
+            },
+            {
+              "title": "Resume Scan",
+              "provider": "Jobscan",
+              "type": "practice",
+              "level": "beginner",
+              "time": "20m",
+              "url": "https://www.jobscan.co/",
+              "why": "Try the free resume scan options and review possible improvements."
+            }
+          ]
+        },
+        {
+          "id": "portfolio",
+          "index": "03",
+          "title": "Portfolio & GitHub",
+          "tag": "Career",
+          "summary": "A public place to show code and projects. Recruiters check it before an interview.",
+          "bestFor": "Students building proof of work",
+          "time": "4 weeks",
+          "resources": [
+            {
+              "title": "GitHub Pages Documentation",
+              "provider": "GitHub Docs",
+              "type": "docs",
+              "level": "beginner",
+              "time": "2h",
+              "url": "https://docs.github.com/en/pages",
+              "why": "Learn how to publish a portfolio site using GitHub Pages."
+            },
+            {
+              "title": "Build a Developer Portfolio",
+              "provider": "YouTube",
+              "type": "video",
+              "level": "beginner",
+              "time": "1h",
+              "url": "https://www.youtube.com/results?search_query=build+a+developer+portfolio+website+GitHub+Pages+tutorial",
+              "why": "Watch project walkthroughs for creating and publishing a portfolio."
+            },
+            {
+              "title": "GitHub Skills",
+              "provider": "GitHub",
+              "type": "practice",
+              "level": "beginner",
+              "time": "3h",
+              "url": "https://skills.github.com/",
+              "why": "Complete interactive GitHub exercises to practise real workflows."
+            }
+          ]
+        },
+        {
+          "id": "interview-prep",
+          "index": "04",
+          "title": "Interview Preparation",
+          "tag": "Career",
+          "summary": "Practice the question types asked in campus and early-career interviews.",
+          "bestFor": "Final-year students",
+          "time": "6 weeks",
+          "resources": [
+            {
+              "title": "Interview Preparation Guide",
+              "provider": "GeeksforGeeks",
+              "type": "docs",
+              "level": "beginner",
+              "time": "20h",
+              "url": "https://www.geeksforgeeks.org/interview-preparation/",
+              "why": "Review common technical interview topics and preparation paths."
+            },
+            {
+              "title": "Technical Interview Preparation Videos",
+              "provider": "YouTube",
+              "type": "video",
+              "level": "beginner",
+              "time": "1h",
+              "url": "https://www.youtube.com/results?search_query=technical+interview+preparation+for+beginners+programming",
+              "why": "Watch explanations and mock interviews for entry-level roles."
+            },
+            {
+              "title": "LeetCode Practice",
+              "provider": "LeetCode",
+              "type": "practice",
+              "level": "beginner",
+              "time": "Ongoing",
+              "url": "https://leetcode.com/",
+              "why": "Solve coding problems and build data-structures and algorithms skills."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "companies",
+      "index": "03",
+      "title": "Companies & Careers",
+      "blurb": "Company pages, salary data, and interview experiences.",
+      "topics": [
+        {
+          "id": "tcs",
+          "index": "01",
+          "title": "TCS",
+          "tag": "Company",
+          "summary": "One of the largest IT services and consulting companies, hiring through campus drives and online tests.",
+          "bestFor": "Freshers and campus hires",
+          "time": "1 week",
+          "resources": [
+            {
+              "title": "TCS Careers",
+              "provider": "TCS",
+              "type": "docs",
+              "level": "beginner",
+              "time": "30m",
+              "url": "https://www.tcs.com/careers",
+              "why": "Check the official careers information and recruitment routes."
+            },
+            {
+              "title": "TCS Interview and NQT Video Lessons",
+              "provider": "YouTube",
+              "type": "video",
+              "level": "beginner",
+              "time": "1h",
+              "url": "https://www.youtube.com/results?search_query=TCS+NQT+interview+preparation+for+freshers",
+              "why": "Find free video explanations of the selection process and common topics."
+            },
+            {
+              "title": "TCS iON NQT Sample Practice",
+              "provider": "TCS iON",
+              "type": "practice",
+              "level": "beginner",
+              "time": "Ongoing",
+              "url": "https://www.tcsion.com/hub/national-qualifier-test/?lang=en",
+              "why": "Includes free sample practice tests; check the page for current test terms."
+            }
+          ]
+        },
+        {
+          "id": "infosys",
+          "index": "02",
+          "title": "Infosys",
+          "tag": "Company",
+          "summary": "A global IT services and consulting company, known for structured training programmes.",
+          "bestFor": "Freshers",
+          "time": "1 week",
+          "resources": [
+            {
+              "title": "Infosys Careers",
+              "provider": "Infosys",
+              "type": "docs",
+              "level": "beginner",
+              "time": "30m",
+              "url": "https://www.infosys.com/careers/",
+              "why": "Use the official careers page to understand roles and hiring."
+            },
+            {
+              "title": "Infosys Interview Preparation Videos",
+              "provider": "YouTube",
+              "type": "video",
+              "level": "beginner",
+              "time": "1h",
+              "url": "https://www.youtube.com/results?search_query=Infosys+interview+preparation+for+freshers",
+              "why": "Watch free walkthroughs of aptitude, technical, and HR interview rounds."
+            },
+            {
+              "title": "Infosys Placement Practice",
+              "provider": "PrepInsta",
+              "type": "practice",
+              "level": "beginner",
+              "time": "Ongoing",
+              "url": "https://prepinsta.com/infosys/",
+              "why": "Practise sample questions for common Infosys placement topics; free and paid material may both appear."
+            }
+          ]
+        },
+        {
+          "id": "wipro",
+          "index": "03",
+          "title": "Wipro",
+          "tag": "Company",
+          "summary": "A global IT services and consulting company with delivery centres worldwide.",
+          "bestFor": "Freshers",
+          "time": "1 week",
+          "resources": [
+            {
+              "title": "Wipro Careers",
+              "provider": "Wipro",
+              "type": "docs",
+              "level": "beginner",
+              "time": "30m",
+              "url": "https://careers.wipro.com/",
+              "why": "Explore roles and application information on the official careers site."
+            },
+            {
+              "title": "Wipro Interview Preparation Videos",
+              "provider": "YouTube",
+              "type": "video",
+              "level": "beginner",
+              "time": "1h",
+              "url": "https://www.youtube.com/results?search_query=Wipro+interview+preparation+for+freshers",
+              "why": "Watch free walkthroughs for Wipro aptitude and interview preparation."
+            },
+            {
+              "title": "Wipro Placement Practice",
+              "provider": "PrepInsta",
+              "type": "practice",
+              "level": "beginner",
+              "time": "Ongoing",
+              "url": "https://prepinsta.com/wipro/",
+              "why": "Practise sample questions for common Wipro placement topics; free and paid material may both appear."
+            }
+          ]
+        },
+        {
+          "id": "job-search",
+          "index": "04",
+          "title": "Job Search & Salary",
+          "tag": "Career",
+          "summary": "Where roles are listed and what they typically pay.",
+          "bestFor": "Active job seekers",
+          "time": "Ongoing",
+          "resources": [
+            {
+              "title": "Finding a Job — Career Advice",
+              "provider": "Indeed",
+              "type": "docs",
+              "level": "beginner",
+              "time": "1h",
+              "url": "https://www.indeed.com/career-advice/finding-a-job",
+              "why": "Read practical guidance on searching and applying for roles."
+            },
+            {
+              "title": "Job Search Strategy Videos",
+              "provider": "YouTube",
+              "type": "video",
+              "level": "beginner",
+              "time": "45m",
+              "url": "https://www.youtube.com/results?search_query=job+search+strategy+for+beginners+career+advice",
+              "why": "Watch tips on applications, networking, and interview preparation."
+            },
+            {
+              "title": "Find Current Job Listings",
+              "provider": "LinkedIn Jobs",
+              "type": "practice",
+              "level": "beginner",
+              "time": "Ongoing",
+              "url": "https://www.linkedin.com/jobs/",
+              "why": "Explore real job listings and practise filtering roles by skills and location."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "emerging",
+      "index": "04",
+      "title": "Emerging Tech",
+      "blurb": "Four fields worth learning next.",
+      "topics": [
+        {
+          "id": "ai-ml",
+          "index": "01",
+          "title": "AI & Machine Learning",
+          "tag": "Emerging tech",
+          "summary": "Systems that learn from data. The base of modern search, recommendations, and generative tools.",
+          "bestFor": "Developers and students",
+          "time": "12 weeks",
+          "resources": [
+            {
+              "title": "Machine Learning Crash Course",
+              "provider": "Google for Developers",
+              "type": "docs",
+              "level": "beginner",
+              "time": "15h",
+              "url": "https://developers.google.com/machine-learning/crash-course",
+              "why": "Learn ML concepts with clear explanations and interactive material."
+            },
+            {
+              "title": "Machine Learning Full-Course Videos",
+              "provider": "YouTube",
+              "type": "video",
+              "level": "beginner",
+              "time": "3h",
+              "url": "https://www.youtube.com/results?search_query=machine+learning+full+course+for+beginners+freeCodeCamp",
+              "why": "Watch free beginner lessons on models, training, and evaluation."
+            },
+            {
+              "title": "Kaggle Learn — Intro to Machine Learning",
+              "provider": "Kaggle",
+              "type": "practice",
+              "level": "beginner",
+              "time": "5h",
+              "url": "https://www.kaggle.com/learn/intro-to-machine-learning",
+              "why": "Train simple models in browser notebooks and complete exercises."
+            }
+          ]
+        },
+        {
+          "id": "cloud",
+          "index": "02",
+          "title": "Cloud Computing",
+          "tag": "Emerging tech",
+          "summary": "Renting compute, storage, and services instead of owning hardware.",
+          "bestFor": "Developers and sysadmins",
+          "time": "8 weeks",
+          "resources": [
+            {
+              "title": "What Is Cloud Computing?",
+              "provider": "AWS",
+              "type": "docs",
+              "level": "beginner",
+              "time": "30m",
+              "url": "https://aws.amazon.com/what-is-cloud-computing/",
+              "why": "Understand cloud services, infrastructure, and common use cases."
+            },
+            {
+              "title": "Cloud Computing Full-Course Videos",
+              "provider": "YouTube",
+              "type": "video",
+              "level": "beginner",
+              "time": "2h",
+              "url": "https://www.youtube.com/results?search_query=cloud+computing+full+course+for+beginners+freeCodeCamp",
+              "why": "Watch free introductions to cloud concepts and major services."
+            },
+            {
+              "title": "AWS Skill Builder",
+              "provider": "AWS",
+              "type": "practice",
+              "level": "beginner",
+              "time": "Ongoing",
+              "url": "https://skillbuilder.aws/",
+              "why": "Explore free digital courses and hands-on learning options; some labs may be paid."
+            }
+          ]
+        },
+        {
+          "id": "cybersecurity",
+          "index": "03",
+          "title": "Cybersecurity",
+          "tag": "Emerging tech",
+          "summary": "Defending systems, networks, and data from attack.",
+          "bestFor": "Beginners and IT students",
+          "time": "10 weeks",
+          "resources": [
+            {
+              "title": "OWASP Top 10",
+              "provider": "OWASP",
+              "type": "docs",
+              "level": "beginner",
+              "time": "5h",
+              "url": "https://owasp.org/www-project-top-ten/",
+              "why": "Understand common web application security risks and mitigations."
+            },
+            {
+              "title": "Cybersecurity Full-Course Videos",
+              "provider": "YouTube",
+              "type": "video",
+              "level": "beginner",
+              "time": "4h",
+              "url": "https://www.youtube.com/results?search_query=cybersecurity+full+course+for+beginners+freeCodeCamp",
+              "why": "Watch free introductions to security fundamentals and defensive practices."
+            },
+            {
+              "title": "TryHackMe Beginner Paths",
+              "provider": "TryHackMe",
+              "type": "practice",
+              "level": "beginner",
+              "time": "Ongoing",
+              "url": "https://tryhackme.com/",
+              "why": "Practise in guided security labs; a selection of rooms is free."
+            }
+          ]
+        },
+        {
+          "id": "data-science",
+          "index": "04",
+          "title": "Data Science",
+          "tag": "Emerging tech",
+          "summary": "Turning raw data into decisions with statistics, code, and visualisation.",
+          "bestFor": "Analysts and students",
+          "time": "12 weeks",
+          "resources": [
+            {
+              "title": "Python Data Science Handbook",
+              "provider": "Jake VanderPlas",
+              "type": "docs",
+              "level": "beginner",
+              "time": "25h",
+              "url": "https://jakevdp.github.io/PythonDataScienceHandbook/",
+              "why": "Read a free book covering NumPy, pandas, visualisation, and data workflows."
+            },
+            {
+              "title": "Data Science Full-Course Videos",
+              "provider": "YouTube",
+              "type": "video",
+              "level": "beginner",
+              "time": "3h",
+              "url": "https://www.youtube.com/results?search_query=data+science+full+course+for+beginners+freeCodeCamp",
+              "why": "Watch free lessons on data analysis, statistics, and machine learning."
+            },
+            {
+              "title": "Kaggle Learn",
+              "provider": "Kaggle",
+              "type": "practice",
+              "level": "beginner",
+              "time": "Ongoing",
+              "url": "https://www.kaggle.com/learn",
+              "why": "Work through short data-science exercises and notebook-based practice."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "facts",
+      "index": "05",
+      "title": "Facts & Insights",
+      "blurb": "Six quick facts about software, AI, companies, and technology in the real world.",
+      "topics": [],
+      "insights": [
+        {
+          "index": "01",
+          "tag": "Language fact",
+          "title": "Python has a comedy-inspired name",
+          "body": "Python is named after the British comedy series Monty Python’s Flying Circus—not the snake. Creator Guido van Rossum wanted a short, distinctive name."
+        },
+        {
+          "index": "02",
+          "tag": "Generative AI",
+          "title": "Text models build a reply one token at a time",
+          "body": "A language model repeatedly estimates what token is likely to come next from the context so far. The process continues until the response is complete."
+        },
+        {
+          "index": "03",
+          "tag": "Web technology",
+          "title": "JavaScript runs beyond the browser",
+          "body": "JavaScript began as a browser scripting language. Runtimes such as Node.js also let developers use it for servers, command-line tools, and automation."
+        },
+        {
+          "index": "04",
+          "tag": "Developer tools",
+          "title": "Git is distributed by design",
+          "body": "A normal Git clone contains the repository history. Developers can commit changes locally and synchronise with other copies when they are ready."
+        },
+        {
+          "index": "05",
+          "tag": "Company milestone",
+          "title": "GitHub became part of Microsoft in 2018",
+          "body": "Microsoft completed its acquisition of GitHub in October 2018. GitHub continued operating as a platform for hosting and collaborating on software projects."
+        },
+        {
+          "index": "06",
+          "tag": "Real-world incident",
+          "title": "A software update caused a global Windows outage",
+          "body": "On 19 July 2024, a faulty CrowdStrike Falcon content update caused affected Windows systems to crash. The company and security authorities said the incident was not a cyberattack."
+        }
+      ]
+    }
+  ]
+};
+window.CRUD_DATA = CRUD_DATA;
+</script>
+
+<script>
+(function () {
+  "use strict";
+
+  var DATA = window.CRUD_DATA || { categories: [] };
+  var app = document.getElementById("app");
+  var state = { type: "all", level: "all", q: "" };
+  var scrollHandler = null;
+  var revealIO = null;
+  var pendingScroll = null;
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  document.documentElement.classList.add("js");
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+
+  /* Category accent, generated art pattern, and icon. */
+  var META = {
+    programming: { accent: "var(--acc-programming)", art: "grid", icon: "code" },
+    resume: { accent: "var(--acc-resume)", art: "diag", icon: "doc" },
+    companies: { accent: "var(--acc-companies)", art: "dots", icon: "building" },
+    emerging: { accent: "var(--acc-emerging)", art: "rings", icon: "spark" },
+    facts: { accent: "var(--acc-facts)", art: "cross", icon: "compass" }
+  };
+
+  var ICONS = {
+    code: '<path d="m8 6-5 6 5 6"/><path d="m16 6 5 6-5 6"/><path d="m13.5 4-3 16"/>',
+    doc: '<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v5h5"/><path d="M9 12h6M9 16h6"/>',
+    building: '<path d="M4 21V6l8-3v18"/><path d="M12 10h8v11"/><path d="M7 8h2M7 12h2M7 16h2M15 14h2M15 18h2"/><path d="M2 21h20"/>',
+    spark: '<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18"/><circle cx="12" cy="12" r="2.5"/>',
+    compass: '<circle cx="12" cy="12" r="8"/><path d="m14.5 9.5-1.8 4.7-4.7 1.8 1.8-4.7z"/>',
+    search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
+    arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>',
+    arrowUp: '<path d="M7 17 17 7M8 7h9v9"/>',
+    book: '<path d="M4 4h6a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H4z"/><path d="M20 4h-6a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h7z"/>',
+    video: '<rect x="3" y="6" width="13" height="12" rx="2"/><path d="m16 11 5-3v8l-5-3z"/>',
+    terminal: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="m7 9 3 3-3 3M13 15h4"/>',
+    check: '<path d="m4 12 5 5L20 6"/>',
+    clock: '<circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/>',
+    level: '<path d="M4 18V9M10 18V5M16 18v-6M22 18V3"/>'
+  };
+
+  var TYPE_ICON = {
+    docs: "book",
+    video: "video",
+    practice: "terminal"
+  };
+
+  function icon(name, cls) {
+    return '<svg' + (cls ? ' class="' + cls + '"' : "") + ' viewBox="0 0 24 24" fill="none" ' +
+      'stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      (ICONS[name] || ICONS.book) + '</svg>';
+  }
+
+  var totalTopics = DATA.categories.reduce(function (n, c) { return n + c.topics.length; }, 0);
+  var totalResources = DATA.categories.reduce(function (n, c) {
+    return n + c.topics.reduce(function (m, t) { return m + t.resources.length; }, 0);
+  }, 0);
+
+  function $(sel, root) { return (root || document).querySelector(sel); }
+  function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+  function esc(value) {
+    return String(value).replace(/[&<>"']/g, function (ch) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch];
+    });
+  }
+  function getCategory(id) {
+    return DATA.categories.filter(function (c) { return c.id === id; })[0] || null;
+  }
+  function getTopic(id) {
+    for (var i = 0; i < DATA.categories.length; i++) {
+      var c = DATA.categories[i];
+      for (var j = 0; j < c.topics.length; j++) {
+        if (c.topics[j].id === id) return { cat: c, topic: c.topics[j] };
+      }
+    }
+    return null;
+  }
+  function meta(cat) { return META[cat.id] || META.programming; }
+  function accentStyle(cat) { return ' style="--accent:' + meta(cat).accent + '"'; }
+  function delay(i) { return ' style="--d:' + (i * 0.06).toFixed(2) + 's"'; }
+  function parseRoute() {
+    var raw = location.hash.replace(/^#\/?/, "");
+    var split = raw.split("?");
+    return {
+      parts: split[0].split("/").filter(Boolean),
+      params: new URLSearchParams(split[1] || "")
+    };
+  }
+  function setTitle(text) {
+    document.title = text ? text + " — CRUD" : "CRUD — Continue Reading to Update and Develop";
+  }
+
+  /* ---------------- views ---------------- */
+
+  function catCard(cat, i) {
+    var m = meta(cat);
+    var isFacts = cat.id === "facts";
+    var countLabel = isFacts ? ((cat.insights || []).length + " quick facts · no outbound links") :
+      (cat.topics.length + " topics · " + (cat.topics.length * 3) + " resources");
+    return '<a class="cat-card" data-reveal data-art="' + m.art + '" href="#/c/' + cat.id + '"' +
+      ' style="--accent:' + m.accent + ';--d:' + (i * 0.06).toFixed(2) + 's">' +
+      '<div class="cat-art" aria-hidden="true"></div>' +
+      '<div class="cat-top"><span class="cat-num">' + cat.index + '</span><span class="cat-icon">' + icon(m.icon) + '</span></div>' +
+      '<div class="cat-body"><h3>' + esc(cat.title) + '</h3><p>' + esc(cat.blurb) + '</p></div>' +
+      '<div class="cat-foot">' +
+        '<span>' + countLabel + '</span>' +
+        '<span class="cat-arrow">' + icon("arrow") + '</span>' +
+      '</div>' +
+    '</a>';
+  }
+
+  function marqueeItems() {
+    var items = [totalTopics + " focused topics", totalResources + " free resources", "6 quick facts", "Free to explore", "Self-paced learning", "Choose your next step"];
+    DATA.categories.forEach(function (c) { items.push(c.title); });
+    return items;
+  }
+
+  function heroStack() {
+    return '<div class="hero-visual" aria-hidden="true">' +
+      '<div class="stack" id="hero-stack">' +
+        '<span class="stack-badge">3 free links</span>' +
+        '<div class="stack-card stack-back">' +
+          '<div class="stack-head"><span class="stack-tag">Documentation</span><span class="stack-icon">' + icon("book") + '</span></div>' +
+          '<div class="stack-lines"><i></i><i></i><i></i></div>' +
+        '</div>' +
+        '<div class="stack-card stack-mid">' +
+          '<div class="stack-head"><span class="stack-tag">Video</span><span class="stack-icon">' + icon("video") + '</span></div>' +
+          '<div class="stack-lines"><i></i><i></i><i></i></div>' +
+        '</div>' +
+        '<div class="stack-card stack-front">' +
+          '<div class="stack-head"><span class="stack-tag">Practice</span><span class="stack-icon">' + icon("terminal") + '</span></div>' +
+          '<h3>Try what you learn</h3>' +
+          '<p>One guide, one video, hands-on practice.</p>' +
+          '<div class="stack-progress"><span></span></div>' +
+          '<div class="stack-chips"><span>Docs</span><span>Video</span><span>Practice</span></div>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }
+
+  function homeView() {
+    var cards = DATA.categories.map(catCard).join("");
+    var strip = marqueeItems().map(function (t) { return "<span>" + esc(t) + "</span>"; }).join("");
+    var stepData = [
+      { n: "01", t: "Browse a category", p: "Choose the learning area you want to explore.", c: "var(--step-1)", ic: "compass" },
+      { n: "02", t: "Open a topic", p: "See what it covers, who it suits, and the suggested time.", c: "var(--step-2)", ic: "search" },
+      { n: "03", t: "Choose a resource", p: "Open the guide, watch the video, then try a hands-on practice task.", c: "var(--step-3)", ic: "arrowUp" }
+    ];
+    var steps = stepData.map(function (s, i) {
+      var card = '<div class="step" data-step-index="' + i + '" data-reveal tabindex="0" style="--step:' + s.c + ';--d:' + (i * 0.08).toFixed(2) + 's">' +
+        '<div class="step-top"><span class="n">' + s.n + '</span><span class="step-icon">' + icon(s.ic) + '</span></div>' +
+        '<h3>' + s.t + '</h3>' +
+        '<p>' + s.p + '</p>' +
+      '</div>';
+      return i < stepData.length - 1
+        ? card + '<div class="step-arrow" aria-hidden="true">' + icon("arrow") + '</div>'
+        : card;
+    }).join("");
+
+    return '' +
+      '<section class="hero">' +
+        heroStack() +
+        '<div class="wrap">' +
+          '<div class="eyebrow">Continue Reading to Update and Develop</div>' +
+          '<h1 class="brand-display" aria-label="CRUD"><span aria-hidden="true">C</span><span aria-hidden="true">R</span><span aria-hidden="true">U</span><span aria-hidden="true">D</span></h1>' +
+          '<div class="hero-row">' +
+            '<p class="hero-sub">A clearer path to your next skill.</p>' +
+            '<p class="hero-p"><span>Choose a topic, follow a guide, watch a video, and put it into practice.</span></p>' +
+          '</div>' +
+          '<form class="search-box" id="home-search" role="search">' +
+            icon("search") +
+            '<input name="q" type="search" placeholder="Search Python, resume, AI, cloud…" aria-label="Search topics" autocomplete="off">' +
+            '<button type="submit">Search</button>' +
+          '</form>' +
+          '<div class="stats">' +
+            '<div><b data-count="' + DATA.categories.length + '">' + DATA.categories.length + '</b><span>Categories</span></div>' +
+            '<div><b data-count="' + totalTopics + '">' + totalTopics + '</b><span>Topics</span></div>' +
+            '<div><b data-count="' + totalResources + '">' + totalResources + '</b><span>Free resources</span></div>' +
+          '</div>' +
+        '</div>' +
+      '</section>' +
+      '<div class="marquee" aria-hidden="true"><div class="marquee-track">' + strip + strip + '</div></div>' +
+      '<section class="section" id="home-categories">' +
+        '<div class="wrap">' +
+          '<div class="sec-head">' +
+            '<div><div class="sec-title"><b>01</b> Categories</div><h2>Choose your path</h2></div>' +
+          '</div>' +
+          '<div class="bento">' + cards + '</div>' +
+        '</div>' +
+      '</section>' +
+      '<section class="section" id="home-how">' +
+        '<div class="wrap">' +
+          '<div class="sec-head">' +
+            '<div><div class="sec-title"><b>02</b> How it works</div><h2>From browse to a first lesson</h2></div>' +
+            '<p class="sec-note">A simple path from choosing a subject to opening your first learning resource.</p>' +
+          '</div>' +
+          '<div class="steps">' + steps + '</div>' +
+        '</div>' +
+      '</section>';
+  }
+
+  function categoryView(cat) {
+    state.type = "all";
+    state.level = "all";
+    setTitle(cat.title);
+    return '' +
+      '<section class="page-head"' + accentStyle(cat) + '>' +
+        '<span class="page-glyph" aria-hidden="true">' + icon(meta(cat).icon) + '</span>' +
+        '<div class="wrap">' +
+          '<nav class="crumbs" aria-label="Breadcrumb"><a href="#/">Home</a><span>/</span><span>' + esc(cat.title) + '</span></nav>' +
+          '<div class="page-head-row">' +
+            '<div><h1>' + esc(cat.title) + '</h1><p class="lede">' + esc(cat.blurb) + '</p></div>' +
+            '<div class="page-count"><b id="topic-count">' + cat.topics.length + '</b><span>topics</span></div>' +
+          '</div>' +
+        '</div>' +
+      '</section>' +
+      '<section class="section"' + accentStyle(cat) + '>' +
+        '<div class="wrap">' +
+          '<div class="filters" id="filters">' + filterGroups(cat) + '</div>' +
+          '<div class="topic-grid" id="topic-results"></div>' +
+        '</div>' +
+      '</section>';
+  }
+
+  function factsView(cat) {
+    setTitle(cat.title);
+    var cards = (cat.insights || []).map(function (item, i) {
+      return '<article class="insight-card" data-reveal style="--insight:' + (i + 1) + ';--d:' + (i * 0.07).toFixed(2) + 's">' +
+        '<div class="insight-top"><span class="insight-index">' + esc(item.index) + '</span><span class="insight-tag">' + esc(item.tag) + '</span></div>' +
+        '<h3>' + esc(item.title) + '</h3>' +
+        '<p>' + esc(item.body) + '</p>' +
+      '</article>';
+    }).join('');
+    return '' +
+      '<section class="page-head"' + accentStyle(cat) + '>' +
+        '<span class="page-glyph" aria-hidden="true">' + icon(meta(cat).icon) + '</span>' +
+        '<div class="wrap">' +
+          '<nav class="crumbs" aria-label="Breadcrumb"><a href="#/">Home</a><span>/</span><span>' + esc(cat.title) + '</span></nav>' +
+          '<div class="page-head-row">' +
+            '<div><h1>' + esc(cat.title) + '</h1><p class="lede">Small, interesting facts about the technology and companies shaping the digital world.</p></div>' +
+            '<div class="page-count"><b>06</b><span>quick facts</span></div>' +
+          '</div>' +
+        '</div>' +
+      '</section>' +
+      '<section class="section"' + accentStyle(cat) + '>' +
+        '<div class="wrap">' +
+          '<div class="sec-head"><div><div class="sec-title"><b>06</b> Facts & Insights</div><h2>Small facts. Bigger picture.</h2></div><p class="sec-note">Six quick reads. No external links or extra steps.</p></div>' +
+          '<div class="insight-grid">' + cards + '</div>' +
+        '</div>' +
+      '</section>';
+  }
+
+  function filterGroups(cat) {
+    var types = [];
+    var levels = [];
+    cat.topics.forEach(function (t) {
+      t.resources.forEach(function (r) {
+        if (types.indexOf(r.type) === -1) types.push(r.type);
+        if (levels.indexOf(r.level) === -1) levels.push(r.level);
+      });
+    });
+    function chips(group, values, allLabel) {
+      return '<div class="chip-group" role="group" aria-label="' + group + '">' +
+        '<span class="chip-label">' + group + '</span>' +
+        '<button class="chip is-on" data-group="' + group.toLowerCase() + '" data-value="all">' + allLabel + '</button>' +
+        values.map(function (v) {
+          var label = v === 'docs' ? 'Documentation' : (v === 'video' ? 'Video' : (v === 'practice' ? 'Practice' : v));
+          return '<button class="chip" data-group="' + group.toLowerCase() + '" data-value="' + v + '">' + label + '</button>';
+        }).join("") +
+      '</div>';
+    }
+    return chips("Type", types, "All") + chips("Level", levels, "All levels");
+  }
+
+  function topicCard(t, i) {
+    return '<a class="topic-card" data-reveal href="#/t/' + t.id + '"' + delay(i) + '>' +
+      '<div class="card-top"><span class="idx">Topic ' + t.index + '</span><span class="tag">' + esc(t.tag) + '</span></div>' +
+      '<h3>' + esc(t.title) + '</h3>' +
+      '<p>' + esc(t.summary) + '</p>' +
+      '<div class="card-foot"><span>Guide · Video · Practice</span><span class="go">Open topic ' + icon("arrow") + '</span></div>' +
+    '</a>';
+  }
+
+  function renderCategoryTopics(cat) {
+    var grid = $("#topic-results");
+    if (!grid) return;
+    var list = cat.topics.filter(function (t) {
+      return t.resources.some(function (r) {
+        return (state.type === "all" || r.type === state.type) &&
+               (state.level === "all" || r.level === state.level);
+      });
+    });
+    grid.innerHTML = list.length
+      ? list.map(topicCard).join("")
+      : '<div class="empty"><p>No topics match these filters.</p><button class="chip" id="clear-filters">Clear filters</button></div>';
+    var count = $("#topic-count");
+    if (count) count.textContent = list.length;
+    var clear = $("#clear-filters");
+    if (clear) clear.addEventListener("click", function () {
+      state.type = "all"; state.level = "all";
+      $$("#filters .chip").forEach(function (c) {
+        c.classList.toggle("is-on", c.dataset.value === "all");
+      });
+      renderCategoryTopics(cat);
+    });
+    observeReveals();
+  }
+
+  function topicView(cat, topic) {
+    var index = cat.topics.indexOf(topic);
+    var next = cat.topics[(index + 1) % cat.topics.length];
+    setTitle(topic.title);
+    return '' +
+      '<div class="progress" id="progress" aria-hidden="true"></div>' +
+      '<section class="page-head"' + accentStyle(cat) + '>' +
+        '<div class="wrap">' +
+          '<nav class="crumbs" aria-label="Breadcrumb"><a href="#/">Home</a><span>/</span><a href="#/c/' + cat.id + '">' + esc(cat.title) + '</a><span>/</span><span>' + esc(topic.title) + '</span></nav>' +
+          '<div class="topic-head">' +
+            '<div>' +
+              '<span class="tag">' + icon(meta(cat).icon) + esc(topic.tag) + '</span>' +
+              '<h1>' + esc(topic.title) + '</h1>' +
+              '<p class="lede">' + esc(topic.summary) + '</p>' +
+            '</div>' +
+            '<dl class="topic-meta">' +
+              '<div><dt>Best for</dt><dd>' + esc(topic.bestFor) + '</dd></div>' +
+              '<div><dt>Time</dt><dd>' + esc(topic.time) + '</dd></div>' +
+              '<div><dt>Resource count</dt><dd>3 · all free</dd></div>' +
+            '</dl>' +
+          '</div>' +
+        '</div>' +
+      '</section>' +
+      '<section class="section"' + accentStyle(cat) + '>' +
+        '<div class="wrap">' +
+          '<div class="sec-head">' +
+            '<div><div class="sec-title"><b>03</b> The three picks</div><h2>Start with any one</h2></div>' +
+            '<div class="sec-note">' + esc(cat.title) + '</div>' +
+          '</div>' +
+          '<div class="res-list">' + topic.resources.map(resourceCard).join("") + '</div>' +
+          '<div class="next-topic"><span>Next topic</span><a href="#/t/' + next.id + '">' + esc(next.title) + ' ' + icon("arrow") + '</a></div>' +
+        '</div>' +
+      '</section>';
+  }
+
+  function resourceCard(res, i) {
+    var n = ("0" + (i + 1)).slice(-2);
+    var initial = res.provider.charAt(0).toUpperCase();
+    var typeLabel = res.type === 'docs' ? 'Documentation' : (res.type === 'video' ? 'Video' : 'Practice');
+    return '<article class="res-card" data-reveal' + delay(i) + '>' +
+      '<div class="res-top">' +
+        '<span class="res-num">' + n + '</span>' +
+        '<span class="type-badge">' + icon(TYPE_ICON[res.type] || "book") + esc(typeLabel) + '</span>' +
+      '</div>' +
+      '<h3>' + esc(res.title) + '</h3>' +
+      '<div class="prov-row"><span class="res-mark" aria-hidden="true">' + esc(initial) + '</span><span class="prov">' + esc(res.provider) + '</span></div>' +
+      '<div class="meta-row"><span>' + icon("level") + esc(res.level) + '</span><span>' + icon("clock") + esc(res.time) + '</span></div>' +
+      '<p class="why">' + esc(res.why) + '</p>' +
+      '<a class="open" href="' + esc(res.url) + '" target="_blank" rel="noopener noreferrer">Open free resource ' + icon("arrowUp") + '</a>' +
+    '</article>';
+  }
+
+  function searchView(q) {
+    setTitle("Search");
+    return '' +
+      '<section class="page-head">' +
+        '<div class="wrap">' +
+          '<nav class="crumbs" aria-label="Breadcrumb"><a href="#/">Home</a><span>/</span><span>Search</span></nav>' +
+          '<h1>Search</h1>' +
+          '<p class="lede">Find a topic, a provider, or a resource name across all ' + totalTopics + ' topics.</p>' +
+          '<form class="search-box search-page" id="search-form" role="search">' +
+            icon("search") +
+            '<input id="search-input" name="q" type="search" value="' + esc(q) + '" placeholder="Search topics, providers, resources…" aria-label="Search" autocomplete="off">' +
+            '<button type="submit">Search</button>' +
+          '</form>' +
+          '<p class="result-count" id="result-count" aria-live="polite"></p>' +
+        '</div>' +
+      '</section>' +
+      '<section class="section"><div class="wrap"><div class="results" id="search-results"></div></div></section>';
+  }
+
+  function aboutView() {
+    setTitle("About");
+    return '' +
+      '<section class="page-head">' +
+        '<div class="wrap">' +
+          '<nav class="crumbs" aria-label="Breadcrumb"><a href="#/">Home</a><span>/</span><span>About</span></nav>' +
+          '<h1>About CRUD</h1>' +
+          '<p class="lede">CRUD helps you find a clear next step in learning. Explore a category, understand a topic, and choose a useful free resource without digging through endless lists.</p>' +
+        '</div>' +
+      '</section>' +
+      '<section class="section"><div class="wrap prose-grid">' +
+        '<div class="prose"><h2>A clear place to begin</h2><p>The catalogue brings four guided learning areas and a separate Facts & Insights collection into one simple place. Browse by interest, then open a topic that matches what you want to understand or practise.</p></div>' +
+        '<div class="prose"><h2>Know what a topic offers</h2><p>Each topic includes a short overview, a suggested audience, an estimated learning time, and one guide, one video, and one practice resource.</p></div>' +
+        '<div class="prose"><h2>Different ways to learn</h2><p>Every guided topic gives you three clear ways to learn: documentation, a video lesson, and hands-on practice. Choose the format that makes the subject easiest for you to learn.</p></div>' +
+        '<div class="prose"><h2>Move at your own pace</h2><p>There is no fixed order or schedule. Start with any category, switch topics whenever you need, and return to a subject when it becomes relevant.</p></div>' +
+        '<div class="prose"><h2>Find resources faster</h2><p>Use search to find topics, learning providers, or resource names across the catalogue. Open a result to see its three links and decide where to begin.</p></div>' +
+        '<div class="prose"><h2>A focused shortlist</h2><p>CRUD keeps each learning topic focused on one guide, one video, and one practice option. The aim is to make the next step easier to choose, not to overwhelm you with another long collection of links.</p></div>' +
+      '</div></section>' +
+      '<section class="section"><div class="wrap">' +
+        '<div class="sec-head"><div><div class="sec-title"><b>01</b> What to expect</div><h2>Built around the way visitors learn</h2></div><a class="text-link" href="#/" data-scroll="home-how">See how it works →</a></div>' +
+        '<div class="criteria">' +
+          '<div class="criterion"><span class="check">' + icon("check") + '</span><div><h3>Four guided learning areas + insights</h3><p>Explore four topic libraries and six bite-sized facts.</p></div></div>' +
+          '<div class="criterion"><span class="check">' + icon("check") + '</span><div><h3>Three picks per topic</h3><p>One documentation guide, one video lesson, and one practice option.</p></div></div>' +
+          '<div class="criterion"><span class="check">' + icon("check") + '</span><div><h3>Useful topic details</h3><p>See a summary, intended audience, and estimated time.</p></div></div>' +
+          '<div class="criterion"><span class="check">' + icon("check") + '</span><div><h3>Learn in your own order</h3><p>Choose a subject and pace that work for you.</p></div></div>' +
+        '</div>' +
+      '</div></section>';
+  }
+
+  /* ---------------- search ---------------- */
+
+  function matches(text, q) {
+    return String(text).toLowerCase().indexOf(q) !== -1;
+  }
+
+  function highlight(text, q) {
+    var safe = esc(text);
+    if (!q) return safe;
+    var re = new RegExp("(" + q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")", "ig");
+    return safe.replace(re, "<mark>$1</mark>");
+  }
+
+  function searchAll(q) {
+    var needle = q.trim().toLowerCase();
+    if (!needle) return [];
+    var out = [];
+    DATA.categories.forEach(function (cat) {
+      cat.topics.forEach(function (topic) {
+        var score = 0;
+        if (matches(topic.title, needle)) score += 4;
+        if (matches(cat.title, needle)) score += 1;
+        if (matches(topic.summary, needle)) score += 1;
+        var hits = topic.resources.filter(function (r) {
+          var hit = matches(r.title, needle) || matches(r.provider, needle) || matches(r.why, needle);
+          if (matches(r.title, needle)) score += 2;
+          if (matches(r.provider, needle)) score += 1;
+          return hit;
+        });
+        if (score > 0 || hits.length) out.push({ cat: cat, topic: topic, score: score, hits: hits });
+      });
+    });
+    return out.sort(function (a, b) { return b.score - a.score || a.topic.title.localeCompare(b.topic.title); });
+  }
+
+  function renderSearchResults(q) {
+    var box = $("#search-results");
+    var count = $("#result-count");
+    if (!box) return;
+    var results = searchAll(q);
+    var suggestions = '<div class="suggestions"><button data-q="Python">Python</button><button data-q="resume">resume</button><button data-q="AI">AI</button><button data-q="TCS">TCS</button></div>';
+    if (!q.trim()) {
+      box.innerHTML = '<div class="empty"><p>Type a topic, provider, or resource name.</p>' + suggestions + '</div>';
+      if (count) count.textContent = "";
+    } else if (!results.length) {
+      box.innerHTML = '<div class="empty"><p>Nothing found for “' + esc(q) + '”.</p>' + suggestions + '</div>';
+      if (count) count.textContent = "0 results";
+    } else {
+      box.innerHTML = results.map(function (item) {
+        var hits = item.hits.map(function (r) { return highlight(r.title, q); }).join(" · ");
+        return '<a class="result" href="#/t/' + item.topic.id + '">' +
+          '<span class="result-cat">' + esc(item.cat.title) + '</span>' +
+          '<h3>' + highlight(item.topic.title, q) + '</h3>' +
+          '<p>' + highlight(item.topic.summary, q) + '</p>' +
+          (hits ? '<span class="result-hits">' + hits + '</span>' : '') +
+        '</a>';
+      }).join("");
+      if (count) count.textContent = results.length + (results.length === 1 ? " result" : " results");
+    }
+    $$(".suggestions button", box).forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var input = $("#search-input");
+        if (input) { input.value = btn.dataset.q; input.focus(); }
+        renderSearchResults(btn.dataset.q);
+      });
+    });
+  }
+
+  function bindSearch(q) {
+    var form = $("#search-form");
+    var input = $("#search-input");
+    if (!form || !input) return;
+    var timer;
+
+    function update(value) {
+      renderSearchResults(value);
+      try { history.replaceState(null, "", "#/search?q=" + encodeURIComponent(value)); } catch (e) {}
+    }
+
+    input.addEventListener("input", function () {
+      clearTimeout(timer);
+      timer = setTimeout(function () { update(input.value); }, 150);
+    });
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      clearTimeout(timer);
+      update(input.value);
+      input.focus();
+    });
+
+    input.addEventListener("keydown", function (e) {
+      var items = $$(".result");
+      if (!items.length) return;
+      var active = items.findIndex(function (el) { return el.classList.contains("is-active"); });
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        active = (active + 1) % items.length;
+        items.forEach(function (el) { el.classList.remove("is-active"); });
+        items[active].classList.add("is-active");
+        items[active].scrollIntoView({ block: "nearest" });
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        active = active <= 0 ? items.length - 1 : active - 1;
+        items.forEach(function (el) { el.classList.remove("is-active"); });
+        items[active].classList.add("is-active");
+        items[active].scrollIntoView({ block: "nearest" });
+      } else if (e.key === "Enter" && active >= 0) {
+        e.preventDefault();
+        items[active].click();
+      } else if (e.key === "Escape") {
+        input.value = "";
+        update("");
+      }
+    });
+
+    renderSearchResults(q);
+  }
+
+  /* ---------------- effects ---------------- */
+
+  function observeReveals() {
+    if (revealIO) revealIO.disconnect();
+    if (reduceMotion) {
+      $$("[data-reveal]").forEach(function (el) { el.classList.add("in"); });
+      return;
+    }
+    revealIO = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in");
+          revealIO.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.05, rootMargin: "0px 0px 140px 0px" });
+    $$("[data-reveal]").forEach(function (el) { revealIO.observe(el); });
+  }
+
+  function countUp() {
+    $$("[data-count]").forEach(function (el) {
+      var target = Number(el.dataset.count) || 0;
+      if (reduceMotion) { el.textContent = target; return; }
+      var start = performance.now();
+      function tick(now) {
+        var p = Math.min(1, (now - start) / 750);
+        el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
+        if (p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    });
+  }
+
+  function bindTilt() {
+    if (reduceMotion || window.matchMedia("(hover: none)").matches) return;
+    $$(".cat-card").forEach(function (card) {
+      var raf = 0;
+      card.style.transformStyle = "preserve-3d";
+      card.addEventListener("mousemove", function (e) {
+        var r = card.getBoundingClientRect();
+        var px = (e.clientX - r.left) / r.width - 0.5;
+        var py = (e.clientY - r.top) / r.height - 0.5;
+        card.style.setProperty("--spot-x", ((px + 0.5) * 100).toFixed(1) + "%");
+        card.style.setProperty("--spot-y", ((py + 0.5) * 100).toFixed(1) + "%");
+        if (raf) return;
+        raf = requestAnimationFrame(function () {
+          card.style.transform = "perspective(900px) rotateX(" + (-py * 3.6).toFixed(2) + "deg) rotateY(" + (px * 4.4).toFixed(2) + "deg) translateY(-3px)";
+          raf = 0;
+        });
+      });
+      card.addEventListener("mouseleave", function () {
+        if (raf) { cancelAnimationFrame(raf); raf = 0; }
+        card.style.transform = "";
+        card.style.removeProperty("--spot-x");
+        card.style.removeProperty("--spot-y");
+      });
+    });
+  }
+
+  /* On touch screens there is no cursor, so the category cards get the
+     hover language through press, focus and a finger-following spotlight. */
+  function bindTouchCards() {
+    if (!window.matchMedia || !window.matchMedia("(hover: none)").matches) return;
+    $$(".cat-card").forEach(function (card) {
+      var resetTimer = 0;
+      var startX = 0, startY = 0, pressed = false;
+
+      function clearSpot() {
+        if (resetTimer) { window.clearTimeout(resetTimer); resetTimer = 0; }
+        card.classList.remove("is-press");
+        pressed = false;
+        card.style.removeProperty("--spot-x");
+        card.style.removeProperty("--spot-y");
+      }
+
+      function spot(e) {
+        var t = e.touches && e.touches[0];
+        if (!t) return;
+        var r = card.getBoundingClientRect();
+        if (!r.width || !r.height) return;
+        var x = Math.min(1, Math.max(0, (t.clientX - r.left) / r.width));
+        var y = Math.min(1, Math.max(0, (t.clientY - r.top) / r.height));
+        card.style.setProperty("--spot-x", (x * 100).toFixed(1) + "%");
+        card.style.setProperty("--spot-y", (y * 100).toFixed(1) + "%");
+      }
+
+      card.addEventListener("touchstart", function (e) {
+        if (resetTimer) { window.clearTimeout(resetTimer); resetTimer = 0; }
+        var t = e.touches && e.touches[0];
+        if (t) { startX = t.clientX; startY = t.clientY; }
+        pressed = true;
+        card.classList.add("is-press");
+        spot(e);
+      }, { passive: true });
+
+      card.addEventListener("touchmove", function (e) {
+        var t = e.touches && e.touches[0];
+        if (t && pressed) {
+          var dx = t.clientX - startX, dy = t.clientY - startY;
+          if ((dx * dx + dy * dy) > 100) {
+            card.classList.remove("is-press");
+            pressed = false;
+          }
+        }
+        spot(e);
+      }, { passive: true });
+
+      function release() {
+        card.classList.remove("is-press");
+        pressed = false;
+        resetTimer = window.setTimeout(clearSpot, 220);
+      }
+
+      card.addEventListener("touchend", release, { passive: true });
+      card.addEventListener("touchcancel", clearSpot, { passive: true });
+    });
+  }
+
+  function bindHero() {
+    var wrap = $(".hero-visual");
+    var stack = $("#hero-stack");
+    if (!wrap || !stack || reduceMotion || window.matchMedia("(hover: none)").matches) return;
+    var raf = 0;
+    wrap.addEventListener("mousemove", function (e) {
+      var r = wrap.getBoundingClientRect();
+      var px = (e.clientX - r.left) / r.width - 0.5;
+      var py = (e.clientY - r.top) / r.height - 0.5;
+      if (raf) return;
+      raf = requestAnimationFrame(function () {
+        stack.style.transform = "rotateX(" + (-py * 4).toFixed(2) + "deg) rotateY(" + (px * 5).toFixed(2) + "deg)";
+        raf = 0;
+      });
+    });
+    wrap.addEventListener("mouseleave", function () {
+      if (raf) { cancelAnimationFrame(raf); raf = 0; }
+      stack.style.transform = "";
+    });
+  }
+
+  function scrollToTarget(id) {
+    var el = document.getElementById(id);
+    if (!el) return false;
+    el.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+    return true;
+  }
+
+  function initScrollLinks() {
+    document.addEventListener("click", function (e) {
+      var link = e.target.closest("[data-scroll]");
+      if (!link) return;
+      e.preventDefault();
+      var id = link.dataset.scroll;
+      if (parseRoute().parts.length === 0 && document.getElementById(id)) {
+        scrollToTarget(id);
+      } else {
+        pendingScroll = id;
+        if (parseRoute().parts.length === 0) render();
+        else location.hash = "#/";
+      }
+    });
+  }
+
+
+  function bindHowItWorks() {
+    var section = $("#home-how");
+    if (!section) return;
+    var cards = $$(".step", section);
+    var arrows = $$(".step-arrow", section);
+    if (!cards.length) return;
+
+    function activate(index) {
+      cards.forEach(function (card, i) {
+        card.classList.toggle("is-current", i === index);
+        card.classList.toggle("is-complete", i < index);
+      });
+      arrows.forEach(function (arrow, i) {
+        arrow.classList.toggle("is-lit", i <= index - 1);
+      });
+    }
+
+    cards.forEach(function (card, index) {
+      card.addEventListener("mouseenter", function () { activate(index); });
+      card.addEventListener("focus", function () { activate(index); });
+      card.addEventListener("keydown", function (e) {
+        if (e.key === "ArrowRight" && cards[index + 1]) { e.preventDefault(); cards[index + 1].focus(); }
+        if (e.key === "ArrowLeft" && cards[index - 1]) { e.preventDefault(); cards[index - 1].focus(); }
+      });
+    });
+
+    if (reduceMotion || !("IntersectionObserver" in window)) {
+      activate(2);
+      return;
+    }
+    var played = false;
+    var observer = new IntersectionObserver(function (entries) {
+      if (played || !entries.some(function (entry) { return entry.isIntersecting; })) return;
+      played = true;
+      observer.disconnect();
+      var index = 0;
+      function next() {
+        activate(index);
+        index += 1;
+        if (index < cards.length) window.setTimeout(next, 820);
+        else window.setTimeout(function () { activate(2); }, 1000);
+      }
+      next();
+    }, { threshold: 0.28 });
+    observer.observe(section);
+  }
+
+  function bindProgress() {
+    var bar = $("#progress");
+    if (!bar) return;
+    scrollHandler = function () {
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      var p = max > 0 ? window.scrollY / max : 0;
+      bar.style.transform = "scaleX(" + p + ")";
+    };
+    window.addEventListener("scroll", scrollHandler, { passive: true });
+    scrollHandler();
+  }
+
+  function cleanup() {
+    if (scrollHandler) {
+      window.removeEventListener("scroll", scrollHandler);
+      scrollHandler = null;
+    }
+    if (revealIO) {
+      revealIO.disconnect();
+      revealIO = null;
+    }
+  }
+
+  /* ---------------- router ---------------- */
+
+  function render() {
+    if (!app) return;
+    var route = parseRoute();
+    var parts = route.parts;
+    var html = "";
+    var after = null;
+
+    cleanup();
+    setTitle("");
+
+    if (!parts.length) {
+      html = homeView();
+      after = function () {
+        countUp();
+        bindTilt();
+        bindTouchCards();
+        bindHero();
+        bindHowItWorks();
+        var form = $("#home-search");
+        if (form) {
+          form.addEventListener("submit", function (e) {
+            e.preventDefault();
+            location.hash = "#/search?q=" + encodeURIComponent(form.q.value.trim());
+          });
+        }
+      };
+    } else if (parts[0] === "c" && getCategory(parts[1])) {
+      var cat = getCategory(parts[1]);
+      html = cat.id === "facts" ? factsView(cat) : categoryView(cat);
+      after = function () {
+        if (cat.id === "facts") return;
+        renderCategoryTopics(cat);
+        var filters = $("#filters");
+        if (filters) {
+          filters.addEventListener("click", function (e) {
+            var chip = e.target.closest(".chip");
+            if (!chip || chip.id === "clear-filters") return;
+            var group = chip.dataset.group;
+            var value = chip.dataset.value;
+            if (group === "type") state.type = value;
+            if (group === "level") state.level = value;
+            $$(".chip[data-group='" + group + "']", filters).forEach(function (c) {
+              c.classList.toggle("is-on", c === chip);
+            });
+            renderCategoryTopics(cat);
+          });
+        }
+      };
+    } else if (parts[0] === "t" && getTopic(parts[1])) {
+      var found = getTopic(parts[1]);
+      html = topicView(found.cat, found.topic);
+      after = function () { bindProgress(); };
+    } else if (parts[0] === "search") {
+      var q = route.params.get("q") || "";
+      state.q = q;
+      html = searchView(q);
+      after = function () { bindSearch(q); };
+    } else if (parts[0] === "about") {
+      html = aboutView();
+    } else {
+      html = '<section class="page-head"><div class="wrap"><h1>Page not found</h1><p class="lede">That route does not exist.</p><p><a class="text-link" href="#/">Go home →</a></p></div></section>';
+    }
+
+    app.innerHTML = html;
+    app.classList.remove("page-enter");
+    void app.offsetWidth;
+    app.classList.add("page-enter");
+    if (after) after();
+    observeReveals();
+    var h1 = $("h1", app);
+    if (h1) h1.setAttribute("tabindex", "-1");
+
+    if (pendingScroll) {
+      var target = pendingScroll;
+      pendingScroll = null;
+      requestAnimationFrame(function () { scrollToTarget(target); });
+    } else {
+      window.scrollTo(0, 0);
+      requestAnimationFrame(function () { window.scrollTo(0, 0); });
+    }
+  }
+
+  /* ---------------- theme ---------------- */
+
+  function initTheme() {
+    var KEY = "crud-theme";
+
+    function current() {
+      return document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+    }
+
+    function sync() {
+      var dark = current() === "dark";
+      var meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute("content", dark ? "#070A12" : "#ACB8AF");
+      $$(".js-theme").forEach(function (btn) {
+        btn.setAttribute("aria-pressed", dark ? "true" : "false");
+        btn.setAttribute("aria-label", dark ? "Switch to light theme" : "Switch to dark theme");
+        btn.setAttribute("title", dark ? "Switch to light theme" : "Switch to dark theme");
+      });
+    }
+
+    function set(theme, persist) {
+      document.documentElement.setAttribute("data-theme", theme);
+      if (persist) { try { localStorage.setItem(KEY, theme); } catch (e) {} }
+      sync();
+    }
+
+    sync();
+
+    $$(".js-theme").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        set(current() === "dark" ? "light" : "dark", true);
+      });
+    });
+  }
+
+  /* ---------------- menu ---------------- */
+
+  function initMenu() {
+    var btn = document.getElementById("menu-btn");
+    var menu = document.getElementById("menu");
+    var close = document.getElementById("menu-close");
+    if (!btn || !menu || !close) return;
+
+    function open() {
+      menu.hidden = false;
+      btn.setAttribute("aria-expanded", "true");
+      document.body.classList.add("menu-open");
+      close.focus();
+    }
+    function shut() {
+      menu.hidden = true;
+      btn.setAttribute("aria-expanded", "false");
+      document.body.classList.remove("menu-open");
+      btn.focus();
+    }
+    btn.addEventListener("click", open);
+    close.addEventListener("click", shut);
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && !menu.hidden) shut();
+    });
+    $$("a", menu).forEach(function (a) { a.addEventListener("click", shut); });
+  }
+
+  function initSkip() {
+    var skip = document.getElementById("skip");
+    if (skip) {
+      skip.addEventListener("click", function (e) {
+        e.preventDefault();
+        var main = document.getElementById("app");
+        if (main) main.focus();
+      });
+    }
+  }
+
+  if (!window.CRUD_DATA) {
+    app.innerHTML = '<section class="page-head"><div class="wrap"><h1>Could not load data</h1><p class="lede">Open index.html from the crud folder.</p></div></section>';
+    return;
+  }
+
+  window.addEventListener("hashchange", render);
+  document.addEventListener("DOMContentLoaded", function () {
+    initTheme();
+    initMenu();
+    initSkip();
+    initScrollLinks();
+    render();
+  });
+})();
+</script>
+</body>
+</html>
