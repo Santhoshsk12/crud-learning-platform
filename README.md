@@ -59,7 +59,7 @@ The site opens in **light** mode on a first visit, then remembers whichever them
 
 ## Tech
 
-One self-contained `index.html` containing the markup, styles, logic and content.
+One self-contained `index.html` containing (HTML, CSS, JS) the markup, styles, logic and content.
 No framework, no build step, no npm, no database. The only external request is Google Fonts.
 
 ```text
