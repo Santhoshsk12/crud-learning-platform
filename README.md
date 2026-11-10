@@ -84,4 +84,10 @@ Or simply double-click `index.html`.
 
 ## Deploy
 
-Hosted on **Vercel** with zero configuration: Framework preset **Other**, no build command, no output directory. Every push to `main` redeploys automatically.
+Hosted on **Vercel** with zero configuration: Framework preset **Other**, no build command, no output directory.
+
+---
+
+## Licence
+
+It's a free learning project. Resource links belong to their respective owners.
